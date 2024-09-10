@@ -1,0 +1,583 @@
+<!DOCTYPE HTML>
+
+<html>
+  <link rel="stylesheet" href="style2.css">
+<!--  <meta name="HandheldFriendly" content="true" />-->
+<!--<meta name="MobileOptimized" content="320" />-->
+<!--<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no" />-->
+
+<head>
+  <link rel="stylesheet" href="katex.min.css">
+    <script src="katex.min.js"></script>
+  <script src="smrender.js"></script>
+
+<style>
+/* optional - uncomment and customise next line to change maths font size
+  .katex { font-size: 1em !important; } 
+*/ 
+</style>
+
+<title>ScaleOpt</title>
+
+
+<meta property="og:image" content="http://personal.lse.ac.uk/veghl/beaver.png" >
+</head>
+
+
+<body onload="myRender()">
+  <div id="outer-wrapper">
+    
+   
+<div id="sidebar">
+  
+<ul class="side-nav">
+  <li id="current"><a href="index.html">Home page</a>
+  <li><a href="recent.html">Recent papers and manuscripts</a>
+  <li><a href="publications.html">Publications</a>
+   <li><a href="scaleopt.html">ERC Starting Grant ScaleOpt</a>
+  <li><a href="teaching.html">Teaching</a>
+</ul>
+
+</div>
+ <div id="content">
+       <table class="focim">
+      <tr> 
+     <td>
+     <h1>ScaleOpt</h1>
+       
+       <h2> Scaling Methods for Discrete and Continuous
+       Optimization</h2>
+       
+
+       <p>
+      This project is funded by a Starting Grant from the
+         European Research Council, under the European Union's Horizon 2020 research and innovation programme, grant agreement no. <a href="https://cordis.europa.eu/project/id/757481">757481</a>.
+  
+<p>
+   Duration: January 2018&ndash;June 2023.
+  <p> Hosted by: <a href="http://lse.ac.uk/maths">Department of Mathematics</a><br> London School of Economics and Political Science
+
+</td>
+       </td>
+<td align=right valign=top>
+<img align=right width=330 scale=0.8 src="erclogo.png"> 
+  <br>
+<img align=center width=200 scale=0.8 src="flag_yellow_high.jpg"> 
+  
+</table>
+
+<!--<figure>-->
+<img align="middle" width="80%"  src="ERC-group.jpg"> 
+<!--<figcaption  text-align="center">Jan 2020</figcaption>
+</figure>-->
+
+<h3 class="alcim">Team Members</h2>
+<ul class="main-ls">
+  <li>
+  <a href="http://personal.lse.ac.uk/veghl">L&aacute;szl&oacute;
+  V&eacute;gh</a> Principal Investigator
+       <li><a href="https://www.lse.ac.uk/Mathematics/people/Sharat-Ibrahimpur">Sharat Ibrahimpur </a>
+  Postdoctoral Researcher, September 2022&ndash;
+       <li><a href="https://christophhertrich.gitlab.io">Christoph Hertrich </a>
+  Postdoctoral Researcher, January 2022&ndash;
+    <li> <a href="https://tomtao26.github.io/">Yixin Tao</a>
+  Postdoctoral Researcher, October 2020&ndash;January 2023
+  <li> <a href="http://personal.lse.ac.uk/loho">Georg Loho</a>
+  Postdoctoral Researcher, February 2019&ndash;September 2020
+  <br>
+    Currently Assistant Professor at the University of Twente
+  <li> <a href="http://personal.lse.ac.uk/kohz3">Zhuan Khye
+  (Cedric) Koh</a> PhD student, September 2018&ndash;September 2022,
+  currently postdoc at CWI.
+   <li> <a
+      href="http://personal.lse.ac.uk/natura">Bento
+  Natura</a> PhD student, September 2018&ndash; July 2022,
+  currently postdoc at Georgia Tech.
+  <li><a href="https://zhero9.github.io">Edin
+  Husi&#263;</a> PhD student, September 2017&ndash;September 2021.  Partially supported by the ERC
+  grant. Currently postdoc at IDSIA Lugano.
+   <li><a href="https://farbodekbatani.github.io">Farbod Ekbatani</a>
+  Part-Time Research Assistant, December 2020&ndash;June
+  2021. Currently PhD student at the University of Chicago.
+ <li>Patrick Veenstra
+<br>
+  Part-Time Research Assistant, January&ndash;April 2019
+</ul>
+ </ul>
+
+<!--
+ <p><a href="http://personal.lse.ac.uk/veghl">L&aacute;szl&oacute;
+  V&eacute;gh</a>, Principal Investigator.
+  <p> <a href="http://personal.lse.ac.uk/loho">Georg Loho</a>, Postdoctoral Researcher, February 2019-.
+  <p> <a href="http://personal.lse.ac.uk/zkoh3">Zhuan Khye
+  (Cedric) Koh</a>, PhD Student, September 2018-.
+  <p><a href="https://zhero9.github.io/page/">Edin
+  Husi&#263;</a> (PhD student)
+  <p> <a
+      href="http://www.lse.ac.uk/Mathematics/people/Research-Students/Bento-Natura">Bento
+  Natura</a> (PhD student)
+-->
+<br>
+
+ <h3 class="alcim">Open Position</h2>
+We have an opening for a postdoc position in Algorithms and Optimisation, jointly  with <a href="http://nolver.net">Neil Olver</a>. Please see the advertisement 
+<a href="https://jobs.lse.ac.uk/Vacancies/I/4373/0/344815/15539/research-officer-in-algorithms-and-optimisation">here</a>. The application deadline is 13 May 2022 (23.59 UK time).
+ <!-- There are no openings at the moment.-->
+  <!--If you are interested in a
+ postdoctoral position in the future, please <a
+ href="mailto:l.vegh@lse.ac.uk">email me</a> to register your interest.
+We currently have an opening for a <a href="https://jobs.lse.ac.uk/Vacancies/W/4533/0/296507/15539/research-officer-in-algorithms-and-optimisation">research officer (postdoc)</a>,
+with application deadline 5th June 2021 (23.59 UK time). Please see the <a href="https://jobs.lse.ac.uk/Vacancies/W/4533/0/296507/15539/research-officer-in-algorithms-and-optimisation">advert</a> for details, and 
+  <a href="mailto:l.vegh@lse.ac.uk">email
+me</a> to register your interest. 
+<p>Areas of particular interest include:
+efficient algorithms for linear and convex programming,
+and the geometry of linear and convex programs;
+strongly polynomial computability;
+mean payoff games and tropical linear programming;
+polynomial-time exact and approximation algorithms for
+network optimization problems;
+market equilibrium computation and fair division problems.
+
+Multiple postdoc and PhD student positions will be available. Please <a href="mailto:l.vegh@lse.ac.uk">email
+me</a> if you are interested.
+
+<p> The current job advertisment for a postdoc position (officially called
+"research officer") is available <a
+href="https://jobs.lse.ac.uk/ViewVacancyV2.aspx?enc=mEgrBL4XQK0+ld8aNkwYmF2sx4+tipaGiT6LhbMoPqSIU61HZ1XXnwMIp8OP1CJNE39H5mz9AdburVPz2qtYy52aEwbA57emcFfjDak3XmlRLO4Mfk1BcQzIc4kgGGIxjS6GWhgA5kGd+eF+mfSUjQ=="
+target="_blank">here</a>. The length of the position is 1 year with
+possible extensions; the starting date is flexible. The closing date
+for applications is  8 December 2017 (23.59 UK time). 
+
+<p> Applicants for PhD positions should be submitted via the LSE PhD application
+system. Please visit the <a
+href="http://www.lse.ac.uk/maths/Degrees/PhD_and_MPhil.aspx"
+target="_blank">departmental PhD application website</a> for
+application guidance. Early application is encouraged.
+The application deadline for positions in this project is 28 February 2018, but late applications
+may also be considered.
+Please contact me before submitting your application.
+
+-->
+
+<hr>
+
+<h3 class="alcim">Project Summary</h2>
+The project focuses on problems and methods on the interface between discrete and continuous optimization.
+A key goal is to further our understanding of strongly polynomial computability, and make progress towards the important open question of 
+finding a strongly polynomial algorithm for linear programming (LP). <!--We highlight some results below.
+
+<h3 class="alcim">Strongly polynomially solvable classes of LP</h3>
+A seminal result of <a href="https://pubsonline.informs.org/doi/10.1287/opre.34.2.250">Tardos</a> showed that an LP of the form $\min c^\top x, Ax=b, x\ge 0$ for $A\in \Z^{m\times n}$ can be solved in time poly$(n,m,\log\Delta)$, where $\Delta$ is the maximum subdeterminant of $A$.
+This was strengthened by 
+<a href="https://link.springer.com/article/10.1007/BF02592148">Vavasis and Ye</a> by removing the integrality requirement on $A$,
+-->
+Some main streams of research are the following. 
+
+<p>
+From the discrete optimization side, our goal is to extend strongly
+polynomial computability to broader classes of linear programs.
+One particularly relevant class of LP is when each column of the constraint matrix has at most two nonzero entries; this is equivalent to the minimum-cost generalized flow problem. 
+Novel variants of the classical scaling methods lead to the first strongly polynomial algorithm for the <a
+href="https://arxiv.org/abs/1611.01778">maximum generalized flow</a>
+problem.
+<!--For the dual problem of two variables per inequality systems,
+we developed a <a href="https://arxiv.org/abs/2004.08634">new strongly
+polynomial algorithm</a> based on the discrete Newton method.
+-->
+Another interesting class of LPs correspond to undiscounted Markov Decision Processes.
+
+<p>
+Our recent work has revisited classical results on linear programming.
+We developed a  <a href="https://arxiv.org/abs/1912.06252"
+target="_blank"> a new layered-least-squares interior-point method</a>
+with significantly improved running times that is strongly polynomial
+for a broad class of problem instances. In a <a
+href="https://arxiv.org/abs/2009.04942">second paper</a> we showed how
+the latest improvements in the complexity of approximate solvers
+translate to fast strongly polynomial algorithms.
+
+<p>
+Another line of work addresses geometric rescaling algorithms. This approach combines
+first-order methods with geometric rescaling techniques to obtain a
+new family of polynomial-time algorithms. See <a
+href="https://arxiv.org/abs/1611.06427">this paper</a> for such
+algorithms and for further references. We will also explore
+applications of this paradigm to combinatorial problems, such as <a
+href="https://arxiv.org/abs/1707.05065">submodular function
+minimization</a>.
+
+<p> 
+Strongly polynomial solvability of LP is inherently connected to the polynomial time solvability of mean payoff games, or equivalently, tropical linear programs, a famous problem in NP$\cap$coNP. See <a href="https://epubs.siam.org/doi/pdf/10.1137/17M1142132">this paper</a> by Allamigeon et al. for a particularly nice connection. Our goal is to further explore the relationship between these problems. Our <a href="https://arxiv.org/abs/1906.06686" target="_blank">recent paper</a> develops a new convexity notion for signed tropical numbers.
+
+<p>
+Market equilibrium models provide some particularly interesting
+examples of convex programs that are strongly polynomially
+solvable. We have established the strongly polynomial computability of
+an equilibrium in linear Arrow-Debreu markets in <a
+href="https://arxiv.org/abs/1809.06266"  target="_blank">this
+paper</a>.
+
+<p>
+In the related area of fair division, we obtained
+the <a href="https://arxiv.org/abs/2009.14793">first constant factor approximation</a> for Nash social welfare for a
+broad class of gross substitute utility functions.
+
+<hr>
+  <h3 class="alcim">Research Visitors</h2>
+
+<h4>2019</h4>
+<a href="http://jugal.ise.illinois.edu/">Jugal Garg</a> (March),
+<a href="https://www.danidorfman.com/">Dani Dorfman</a> (March),
+<a href="https://sophie.huiberts.me/">Sophie Huiberts</a> (July),
+<a href="http://users.ics.forth.gr/~mfasoul/">Michail Fasoulakis</a> (Nov).
+
+<h4>2018</h4>
+<a href="http://www.cs.elte.hu/~tkiraly">Tam&aacute;s Kir&aacute;ly</a> (Feb), <a href="http://jugal.ise.illinois.edu/">Jugal Garg</a> (March), Sergei Chubanov (March), <a href="https://faculty.nps.edu/jefferson.huang/">Jefferson Huang</a> (March/April), <a href="http://people.idsia.ch/~grandoni/">Fabrizio Grandoni</a> (April),
+ <a href="http://personal.lse.ac.uk/loho">Georg Loho</a> (April),
+<a href="https://homepages.cwi.nl/~dadush/">Daniel Dadush</a> (Sep),
+<a href="http://www.cs.elte.hu/~berkri"> Krist&oacute;f B&eacute;rczi<a> (Oct),
+<a href="https://www.hcm.uni-bonn.de/people/profile/vera-traub/">Vera Traub</a> (Dec).
+
+<p>
+  <hr>
+<h3 class="alcim">Publications and Manuscripts</h2>
+(To be updated)
+ <table class="publist">
+  <tbody>
+
+
+
+
+
+
+
+  <tr class="pubitem2">
+<td class="main">
+<font class="title">
+Approximating Nash Social Welfare under Rado Valuations
+</font>
+<br>
+<font class="author">
+Jugal Garg, Edin Husi&#263;, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+    <br>
+   <font class="conference">
+STOC 2021
+  </font>
+</td>
+<td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/2009.14793"  target="_blank">arXiv:2009.14793</a></font>
+  
+  <tr class="pubitem2">
+<td class="main">
+<font class="title">
+Directed Shortest Paths via Approximate Cost Balancing
+</font>
+<br>
+<font class="author">
+James B. Orlin, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+  <br>
+    <font class="conference">
+SODA 2021
+  </font>
+  <td class="link">
+<a class="pdf" href="papers/orlin-vegh-soda.pdf"
+    target="_blank">SODA version</a>
+    <br>
+<font class="arxiv">
+<a href="https://arxiv.org/abs/2007.07975"  target="_blank">arXiv:2007.07975</a></font>
+
+  
+<tr class="pubitem2">
+<td class="main">
+<font class="title">
+Oriented Matroids from Triangulations of Products of Simplices
+</font>
+<br>
+<font class="author">
+Marcel Celaya, Georg Loho, Chi Ho Yuen
+  </font>
+  <br>
+</td>
+<td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/2005.01787"  target="_blank">arXiv:2005.01787</a></font>
+
+
+ <tr class="pubitem">
+<td class="main">
+<font class="title">
+Auction Algorithms for Market Equilibrium with Weak Gross Substitute Demands
+</font>
+<br>
+<font class="author">
+Jugal Garg, Edin Husi&#263;, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+  <br>
+    <font class="conference">
+ STACS 2021
+</font>
+</td>
+<td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/1908.07948"  target="_blank">arXiv:1908:07948</a></font>
+
+
+<tr class="pubitem2">
+<td class="main">
+<font class="title">
+A Strongly Polynomial Label-Correcting Algorithm for Linear Systems with Two Variables per Inequality
+</font>
+<br>
+<font class="author">
+Zhuan Khye Koh, Bento Natura, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+  <br>
+</td>
+<td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/2004.08634"  target="_blank">arXiv:2004.08634</a></font>
+
+
+<tr class="pubitem2">
+<td class="main">
+<font class="title">
+Revisiting Tardos's Framework for Linear Programming: Faster Exact Solutions using Approximate Solvers
+</font>
+<br>
+<font class="author">
+Daniel Dadush, Bento Natura, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+  <br>
+  <font class="conference">
+  FOCS 2020
+</font>
+  <br>
+</td>
+<td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/2009.04942"  target="_blank">arXiv:2009.04942</a></font>
+
+
+
+
+  	<tr class="pubitem">
+<td class="main">
+<font class="title">
+A scaling-invariant algorithm for linear programming whose running time depends only on the constraint matrix
+</font>
+<br>
+<font class="author">
+Daniel Dadush, Sophie Huiberts, Bento Natura, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+  <br>
+     <font class="conference">
+STOC 2020
+</font>
+</td>
+<td class="link">
+
+<a class="pdf" href="papers/DHNV20.pdf"
+    target="_blank">STOC version</a>
+    <br>
+<font class="arxiv">
+<a href="https://arxiv.org/abs/1912.06252"  target="_blank">arXiv:1912.06252</a></font>
+
+
+<tr class="pubitem">
+<td class="main">
+<font class="title">
+A Simpler and Faster Strongly Polynomial Algorithm for Generalized Flow Maximization</font>
+<br>
+<font class="author">
+Neil Olver, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+  <br>
+   <font class="journal">
+Journal of the ACM, <a href="https://dl.acm.org/doi/10.1145/3383454?cid=81100084130">67(2):10</a>, 2020.
+</font>
+<br>
+  <font class="conference">
+Conference version: STOC 2017
+  </font>
+  <!--
+<br>
+  <p class="abstract">
+  We present a new strongly polynomial algorithm for generalized flow
+  maximization. The first strongly polynomial algorithm for this
+  problem was given in [V&eacute;gh16]; our new algorithm is much
+  simpler, and much faster. The complexity bound O((m+n log n)mnlog(n<sup>2</sup>/m)) improves on the previous estimate in [V&eacute;gh16] by almost a factor O(n<sup>2</sup>). Even for small numerical parameter values, our algorithm is essentially as fast as the best weakly polynomial algorithms. The key new technical idea is relaxing primal feasibility conditions. This allows us to work almost exclusively with integral flows, in contrast to all previous algorithms for the problem.
+</td>
+-->
+</td>
+<td class="link">
+   <div class="acmdlitem" id="item2xxxxx"><img
+  src="http://dl.acm.org/images/oa.gif" width="25" height="25"
+  border="0" alt="ACM DL Author-ize service"
+    style="vertical-align:middle"/>
+<a class="conference" href="https://dl.acm.org/doi/10.1145/3383454?cid=81100084130"
+    target="_blank">JACM version</a>
+    <br>
+
+   <div class="acmdlitem" id="item2xxxxx"><img
+  src="http://dl.acm.org/images/oa.gif" width="25" height="25"
+  border="0" alt="ACM DL Author-ize service"
+    style="vertical-align:middle"/>
+<a class="conference" href="https://dl.acm.org/doi/10.1145/3055399.3055439?cid=81100084130"
+    target="_blank">STOC version</a>
+    <br>
+<font class="arxiv">
+<a href="https://arxiv.org/abs/1611.01778"  target="_blank">arXiv:1611.01778</a>
+<!-- ACM DL Article: A strongly polynomial algorithm for generalized -->
+  <!-- flow maximization -->
+</font>
+
+
+
+   <tr class="pubitem">
+<td class="main">
+<font class="title">
+ Geometric Rescaling Algorithms for Submodular Function Minimization
+</font>
+<br>
+<font class="author">
+Daniel Dadush, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh, Giacomo Zambelli
+</font>
+<br>
+ <font class="journal">
+Accepted to Mathematics of Operations Research, 2020.
+</font>
+  <br>
+  <font class="conference">
+Conference version: SODA 2018.
+</font>
+<!--  <p class="abstract">
+  We present a new class of polynomial-time algorithms for submodular function minimization (SFM), as well as a unified framework to obtain strongly polynomial SFM algorithms.-->
+</td>
+<td class="link">
+<a class="pdf" href="papers/dadush-vegh-zambelli-soda2018.pdf"
+  target="_blank">SODA version</a>
+<br>
+<font class="arxiv">
+<a href="http://arxiv.org/abs/1707.05065"  target="_blank">arXiv:1707.05065</a></font>
+
+    <tr class="pubitem">
+<td class="main">
+<font class="title">
+Signed tropical convexity
+</font>
+<br>
+<font class="author">
+Georg Loho, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+  <br>
+   <font class="conference">
+ITCS 2020
+</font>
+<td class="link">
+  <a class="pdf" href="https://drops.dagstuhl.de/opus/volltexte/2020/11709/pdf/LIPIcs-ITCS-2020-24.pdf"
+  target="_blank">ITCS version</a>
+<br>
+<font class="arxiv">
+<a href="https://arxiv.org/abs/1906.06686" target="_blank">arXiv:1906:06686</a></font>
+
+
+   <tr class="pubitem">
+<td class="main">
+<font class="title">
+Tropical Carath&eacute;odory with Matroids
+</font>
+<br>
+<font class="author">
+Georg Loho, Raman Sanyal
+  </font>
+  <br><td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/1912.11262" target="_blank">arXiv:1912.11262</a></font>
+
+
+
+    <tr class="pubitem">
+<td class="main">
+<font class="title">
+Face posets of tropical polyhedra and monomial ideals
+</font>
+<br>
+<font class="author">
+Georg Loho, Ben Smith
+  </font>
+  <br><td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/1909.01236" target="_blank">arXiv:1909:01236</a></font>
+
+   <tr class="pubitem">
+<td class="main">
+<font class="title">
+Tropical Ehrhart Theory and Tropical Volume
+</font>
+<br>
+<font class="author">
+Georg Loho, Matthias Schymura
+  </font>
+  <br>
+  <font class="journal">Research in the Mathematical Sciences, 7(30) (2020)</a>
+  <br><td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/1908.07893" target="_blank">arXiv:1908.07893</a></font>
+
+
+
+     <tr class="pubitem">
+<td class="main">
+<font class="title">
+ A Strongly Polynomial Algorithm for Linear Exchange Markets
+</font>
+<br>
+<font class="author">
+Jugal Garg, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+  <br>
+  <font class="conference">
+STOC 2019
+</font>
+<td class="link">
+<a class="pdf" href="papers/garg-vegh-ad.pdf"
+  target="_blank">STOC version</a>
+<br>
+<font class="arxiv">
+<a href="https://arxiv.org/abs/1809.06266"  target="_blank">arXiv:1809.06266</a></font>
+
+
+
+    <tr class="pubitem">
+<td class="main">
+<font class="title">
+ Rescaling Algorithms for Linear Conic Feasibility
+</font>
+<br>
+<font class="author">
+Daniel Dadush, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh, Giacomo Zambelli
+</font>
+<br>
+<font class="journal">
+Mathematics of Operations Research, <a href="https://pubsonline.informs.org/doi/10.1287/moor.2019.1011">45(2):403&ndash;795</a>, 2020. 
+ </font>
+</td>
+<td class="link">
+<font class="arxiv">
+<a href="http://arxiv.org/abs/1611.06427"  target="_blank">arXiv:1611.06427</a></font>
+
+  </tbody>
+</table>
+
+<hr>
+  </div>
+    
+  </div>
+
+
+  </body>
+</html>

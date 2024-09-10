@@ -1,0 +1,217 @@
+* {
+
+padding:0;
+
+margin:0;
+
+}
+
+h1, h2, h3, h4, h5, h6, p, pre, blockquote, form, label, ul, ol, dl, fieldset, address { margin:20px 0; }
+
+li, dd, blockquote { margin-left: 40px; }
+
+fieldset { padding:10px; }
+
+img { border: 0px; }
+/* @end */
+
+/* @group HTML, Body */
+body {
+	font-size: 1em;
+  line-height: 1.16;
+	font-family:   Helvetica, Verdana, sans-serif;
+        background-color: white ;
+
+}
+
+a:link {text-decoration:none;}    /* unvisited link */
+a:visited {text-decoration:none;} /* visited link */
+a:hover {text-decoration:underline;}   /* mouse over link */
+a:active {text-decoration:underline;}  /* selected link */
+
+div#outer-wrapper {
+        margin-top: 3%;
+	background: url(csik.jpg) repeat-y;
+        overflow: hidden;
+}
+
+
+div#content {
+float: right ;
+	width: 60%;
+        margin-top: 40px;
+	margin-right: 30px;
+	display: inline;
+        overflow: hidden;
+        font-size: 1em;
+        font-family: Helvetica, Verdana, sans-serif;
+  }
+
+
+div#sidebar {
+	float: left;
+        margin-top: 60px;
+        margin-left: 10.5%;
+	width: 23%;
+	display: inline;
+        background: url(black.jpg);
+        font-family: "Times New Roman", serif;
+         text-transform: uppercase;
+}
+
+ul.side-nav {
+	margin: 25px 10px 25px 50px;
+ 
+	font-size: 1em;
+        color: "white";
+}
+ul.side-nav li {
+	margin: 0;
+	list-style-type: none;
+	padding: 1px 0;
+}
+ul.side-nav li a {
+	display: block;
+	margin: 0;
+	padding: 5px 0 5px 5px;
+
+}
+
+ul.side-nav li a:link, ul.side-nav li a:visited {
+
+	color: white;
+	text-decoration: none;
+}
+
+
+ul.main-ls {
+    font-size: 1em;
+        font-family: Helvetica, Verdana, sans-serif;
+ list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+ul.main-ls li {
+     font-size: 1em;
+        font-family: Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
+}
+ul.main-ls li a {
+     font-size: 1em;
+        font-family: Helvetica, Verdana, sans-serif;
+  display: block;
+  width: 200px;
+}
+
+ul.main-ls li a:hover {
+    font-size: 1em;
+        font-family: Helvetica, Verdana, sans-serif;
+  color: #cac6ba;
+}
+
+
+h2.alcim2 {
+  color:rgb(94, 38, 5);
+}
+
+h3.alcim {
+  color:rgb(94, 38, 5);
+}
+
+hr.vonal{
+  width: 100%; height: 3px;
+  color:black;
+  background-color: black;
+}
+
+font.title {
+font-size:100%;
+font-weight:bold;
+color:black;
+}
+
+a.pdf {
+    font-size:100%;
+    font-weight:bold;
+color:rgb(94, 38, 5);
+}
+
+font.author {
+font-size:100%;
+}
+
+font.journal {
+font-size:100%;
+color:rgb(94, 38, 5);
+}
+
+font.conference {
+font-size:100%;
+color:rgb(94, 38, 5);
+font-style:italic;
+}
+font.newsfont {
+font-size:100%;
+color:black;
+}
+
+font.newsfont2 {
+font-size:100%;
+color:black;
+font-style:bold;
+}
+
+
+font.arxiv {
+font-size:100%;
+color:blue;
+}
+
+p.abstract{
+  font-size:90%;
+  margin-left:20pt;
+color:grey;
+text-align:justify;
+font-style:italic;
+}
+
+table.focim {
+  font-size: 1em;
+  font-family:   Helvetica, Verdana, sans-serif;
+width:100%;
+}
+
+
+
+table.publist {
+padding:6px 20px;
+width:100%;
+border-spacing:20pt;
+}
+
+table.news {
+padding:0px 6px;
+width:100%;
+border-spacing:10pt;
+}
+
+tr.pubitem2 {
+border-spacing:0pt;
+}
+tr.pubitem {
+
+}
+
+td.main {
+width:75%;
+}
+
+td.link {
+  vertical-align: baseline;
+  text-align:center;
+width:25%;
+}
+
+td.rest {
+width:0%
+}
