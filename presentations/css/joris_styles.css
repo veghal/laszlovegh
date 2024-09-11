@@ -1,0 +1,133 @@
+.talk_title_container {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+.talk_title {
+  font-size: 150%;
+  font-weight: bold;
+}
+.talk_subtitle, .sub_header, .left_subheader {
+  font-size: 100%;
+  font-style: italic;
+  line-height: 130%;
+}
+.talk_author_container {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+.talk_author_name {
+  font-size:  90%;
+  margin-bottom: 0.5em;
+}
+.talk_author_affiliation {
+  font-size: 70%;
+}
+.talk_author_email {
+  font-size: 70%;
+}
+.talk_author_email.first {
+  margin-top: 0.5em;
+}
+.talk_author_twitterhandle {
+  font-size: 70%;
+}
+.talk_author_twitterbird {
+  background-image: url(../presentations_shared/images/twitter.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-left: 1.1em;
+}
+.talk_occasion {
+  font-size: 50%; text-align:center;
+}
+.centered_header, .left_header {
+  font-size: 150%;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.8em;
+}
+.left_header, .left_subheader {
+  text-align: left;
+}
+ul.bullet_list {
+  text-align: left;
+  margin-left: 1.5em;
+  list-style: circle;
+}
+ul.bolded_list {
+  text-align: left;
+  margin-left: 1.5em;
+  list-style: none;
+}
+ul.bolded_list>li {
+  font-weight: bold;
+}
+ul.bolded_list>ul {
+  padding-bottom: 0.5em;
+}
+ul.compact_bolded_list {
+  text-align: left;
+  margin-left: 1.5em;
+  list-style: none;
+}
+ul.compact_bolded_list>li {
+  font-weight: bold;
+  line-height: 120%;
+  margin-bottom: 0.5em;
+}
+ul.compact_bolded_list>ul {
+  padding-bottom: 0.5em;
+}
+.text_container {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+.text_centered {
+  text-align: center;
+}
+.cited_author {
+  font-size: 60%;
+  color: #333;
+}
+a.small_print {
+  color: #555;
+  text-decoration: none;
+  padding: 0;
+  background: none;
+  text-shadow: none;
+}
+a.small_print:hover,
+a.small_print:focus {
+  color: #000;
+}
+
+/* Div based grids, inspired by divTable.com */
+.divGrid{
+	display: table;
+	width: 100%;
+}
+.divGridRow {
+	display: table-row;
+}
+.divGridHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divGridCell, .divGridHead {
+	display: table-cell;
+  vertical-align: middle;
+	padding: 3px 10px;
+}
+.divGridHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divGridFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divGridBody {
+	display: table-row-group;
+}

@@ -1,0 +1,308 @@
+#step-title {
+  text-align: center;
+}
+
+#step-title h1.title {
+  font-size: 70;
+}
+
+#step-title p {
+  font-size: 25px;
+  margin-top: 30px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.step.sim.foundation {
+  background-color: white;
+  width: 900px;
+  height: 100px;
+  padding: 50px;
+  opacity: 1
+}
+
+.step.sim.active {
+  color: black;
+}
+
+#step-sim-4 canvas {
+  border-bottom: solid 20px black;
+  opacity: .8;
+}
+
+#step-sim-7 {
+  width: 800px;
+  height: 600px;
+  padding: 0
+}
+
+#step-good-news-proof-3 div i {
+  display: block;
+  position: relative
+}
+
+#step-good-news-proof-3 .a {
+  left: 220px; bottom: 130px;
+}
+
+#step-good-news-proof-3 .b {
+  left: 460px; bottom: 130px;
+}
+
+#step-good-news-proof-3 .c {
+  left: 300px; bottom: 500px;
+}
+
+#step-good-news-proof-3 .d {
+  left: 370px; bottom: 340px;
+}
+
+.impress-on-overview {
+    color: #fff;
+}
+
+body.impress-on-step-simple-triangulation-better,
+#step-simple-triangulation:not(.active) {
+  transition-delay: 500ms
+}
+
+#step-edge-quad {
+  height: 750px;
+}
+
+.active + #step-edge-reversed {
+  opacity: 1
+}
+
+.active + #step-edge-reversed p, .active + #step-edge-reversed .arcs {
+  opacity: 0;
+}
+
+#step-edge-reversed div {
+  position: relative;
+  height: 500px;
+}
+
+#step-edge-reversed canvas {
+  position: absolute;
+  left: 200px;
+}
+
+.step.active .flip {
+  display: inline-block;
+  transform: rotateX(360deg);
+  transition: 1s;
+  transition-delay: 1s;
+}
+
+#step-flip-algo-proof-1 {
+  height: 700px;
+}
+
+#step-flip-algo-proof-2 div {
+  position: relative;
+  height: 500px;
+}
+
+#step-flip-algo-proof-2 canvas {
+  position: absolute;
+  left: 200px;
+}
+
+.active + #step-flip-algo-proof-2 {
+  opacity: 1
+}
+
+.active + #step-flip-algo-proof-2 div :not(.step-1) {
+  opacity: 0;
+}
+
+.active + #step-flip-algo-proof-2 p {
+  opacity: 0;
+}
+
+#step-flip-algo-proof-2 div i {
+  display: block;
+  position: absolute;
+}
+
+#step-flip-algo-proof-2 .a {
+  left: 260px; top: 110px;
+}
+
+#step-flip-algo-proof-2 .b {
+  left: 240px; top: 380px;
+}
+
+#step-flip-algo-proof-2 .c {
+  left: 585px; top: 380px;
+}
+
+#step-flip-algo-proof-2 .d {
+  left: 360px; top: 0px;
+}
+
+#step-flip-algo-proof-2 .p {
+  left: 560px; top: 160px;
+}
+
+#step-flip-algo-angles-2 div {
+  position: relative;
+}
+
+#step-flip-algo-angles-2 div span {
+  display: block;
+  position: absolute;
+}
+
+#step-flip-algo-angles-2 div span.alpha {
+  left: 154px; top: 120px;
+}
+#step-flip-algo-angles-2 div span.beta {
+  left: 710px; top: 150px;
+}
+#step-flip-algo-angles-2 div span.alphaltbeta {
+  left: 397px; top: 180px;
+}
+
+#step-ruppert-intro-1 {
+  height: 700px;
+}
+
+#step-ruppert-intro-2 div {
+  position: relative;
+  height: 400px;
+}
+
+#step-ruppert-intro-2 div canvas {
+  position: absolute;
+  left: 250px;
+}
+
+.active + #step-ruppert-intro-2 {
+  opacity: 1
+}
+
+.active + #step-ruppert-intro-2 canvas:not(.base),
+.active + #step-ruppert-intro-2 p {
+  opacity: 0
+}
+
+#step-encroached-edge {
+  height: 850px;
+}
+
+#step-encroached-edge-sol div {
+  position: relative;
+  height: 400px;
+}
+
+#step-encroached-edge-sol div canvas {
+  position: absolute;
+  left: 250px;
+}
+
+.active + #step-encroached-edge-sol {
+  opacity: 1
+}
+
+.active + #step-encroached-edge-sol p,
+.active + #step-encroached-edge-sol canvas.step-2 {
+  opacity: 0
+}
+
+#step-encroached-edge-sol.active canvas.step-1 {
+  opacity: 0
+}
+
+#step-bad-tri-sol-1 {
+  height: 700px;
+}
+
+#step-bad-tri-sol-2 div {
+  position: relative;
+  height: 400px;
+}
+
+#step-bad-tri-sol-2 div canvas {
+  position: absolute;
+  left: 250px;
+}
+
+.active + #step-bad-tri-sol-2 {
+  opacity: 1
+}
+
+.active + #step-bad-tri-sol-2 p,
+.active + #step-bad-tri-sol-2 canvas.step-2,
+#step-bad-tri-sol-2.active canvas.step-1 {
+  opacity: 0
+}
+
+#step-ruppert-visu p {
+  font-size: 25px;
+  font-family: 'Courier New', monospace;
+}
+
+#step-ruppert-visu select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 10px;
+  background-color: transparent;
+  border: solid 2px white;
+  color: white;
+  font-family: 'Courier New', monospace;
+  font-size: 25px;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+#step-ruppert-visu select option {
+  background-color: white;
+  color: black;
+}
+
+#overview { display: none }
+
+/*
+    We also make other steps visible and give them a pointer cursor using the
+    `impress-on-` class.
+*/
+
+
+.impress-on-step-timeline-second .timeline-slide{
+  opacity: 1;
+}
+
+.impress-on-overview 
+.step {
+    opacity: 1;
+    cursor: pointer;
+    font-size: .8em;
+}
+
+.impress-progressbar {
+  position: absolute;
+  right: 318px;
+  bottom: 1px;
+  left: 118px;
+  border-radius: 7px;
+  border: 2px solid rgba(100, 100, 100, 0.2);
+}
+.impress-progressbar DIV {
+  width: 0;
+  height: 2px;
+  border-radius: 5px;
+  background: rgba(75, 75, 75, 0.4);
+  transition: width 1s linear;
+}
+.impress-progress {
+  position: absolute;
+  left: 59px;
+  bottom: 1px;
+  text-align: left;
+  opacity: 0.6;
+}
+
+.substep { opacity: 0; }
+        .substep.substep-visible { opacity: 1; transition: opacity 1s; }

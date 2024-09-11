@@ -1,0 +1,155 @@
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../lib/fonts/Lato-Regular.ttf);
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 400;
+  src: url(../lib/fonts/Lato-Italic.ttf);
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: url(../lib/fonts/Lato-Bold.ttf);
+}
+
+@font-face {
+  font-family: 'Patua One';
+  src: url(../lib/fonts/PatuaOne-Regular.ttf);
+}
+
+
+body, p {
+  font-family: 'Lato';
+  font-size: 1em;
+  font-weight: 100;
+  color: red;
+}
+
+body {
+  transition: 0.5s
+}
+
+div, p, canvas, i, em {
+  transition: 1s
+}
+
+canvas {
+    padding: 0;
+    margin: auto;
+    display: block;
+    width: 800px;
+}
+
+h1 {
+  font-family: 'Patua One';
+  font-size: 80px;
+  /*text-shadow: 0px 7px rgba(0, 0, 0, 0.5);*/
+  font-weight: bold;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.white-bg {
+  background-color: white;
+}
+
+.white, .white h1, .white p {
+  color: black;
+  text-shadow: none;
+}
+
+.gray-bg {
+  background-color: gray;
+}
+
+.red-bg {
+  background-color: rgb(255, 68, 68);
+}
+
+.orange-bg {
+  background-color: rgb(255, 187, 51);
+}
+
+.green-bg {
+  background-color: rgb(153, 204, 0);
+}
+
+.purple-bg {
+  background-color: rgb(170, 102, 204);
+}
+
+.blue-bg{
+    background-color: rgb(170, 102, 204);
+    display: none;
+}
+
+.blue {
+  background-color: rgb(51, 181, 229);
+}
+
+
+.step:not(.active) {
+  opacity: .9;
+}
+
+.step .box {
+  float: left;
+  width: 45%;
+  padding: 0px;
+  height: 600px;
+}
+
+.thm{
+  display:block;
+  margin-left:10px;
+  margin-bottom:20px;
+  font-style:normal;
+}
+.thm:before{
+  content:"Theorem.\00a0\00a0";
+  float:left;
+  font-weight:bold;
+}
+
+.proof{
+  display:block;
+  margin-left:10px;
+  margin-bottom:30px;
+  font-style:normal;
+}
+.proof:before{
+  content:'Proof.\00a0\00a0';
+  float:left;
+  font-weight:bold;
+}
+.proof:after{
+  content:"\25FC";
+}
+
+ol {
+  counter-reset: list;
+}
+ol > li {
+  list-style: none;
+  position: relative;
+}
+
+ol > li:before {
+  content: "(" counter(list, lower-roman) ") ";
+  counter-increment: list;
+}

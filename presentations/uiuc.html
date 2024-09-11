@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Linear Programming Slides</title>
+  <script src="lib/js/jquery-1.11.2.min.js"></script>
+  <script src="lib/js/jcanvas.min.js"></script>
+  <script src="lib/js/queue.min.js"></script>
+  <script src="js/geometry.js"></script>
+  <script src="js/graph.js"></script>
+  <script src="js/triangulate.js"></script>
+  <script src="js/sim.js"></script>
+  <script src="js/index.js"></script>
+  <script src="data/banana.js"></script>
+  <script src="data/key.js"></script>
+  <script src="data/ty.js"></script>
+  <script src="data/sheet.js"></script>
+  <script src="data/guitar.js"></script>
+  <script src="js/steps.js"></script>
+  <script src="Chart.min.js"></script>
+  <script src="Chart.js/samples/utils.js"></script>
+
+<link rel="stylesheet" href="KaTeX/dist/katex.min.css">
+<script defer src="KaTeX/dist/katex.min.js"></script>
+<script defer src="KaTeX/dist/contrib/auto-render.min.js"
+   ></script>
+   <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log("Run Katex rendering")
+        renderMathInElement(document.body, {
+              delimiters: [
+                  {left: "$$$", right: "$$$", display: true},
+                  {left: "$$", right: "$$", display: false},
+              ]
+        });
+    });
+</script>
+
+
+  <!-- <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS" : {
+        availableFonts : ["STIX"],
+        preferredFont : "STIX",
+        webFont : "STIX-Web",
+        imageFont : null
+    },
+  tex2jax: {
+    inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+  },
+  TeX: {
+    Macros: {
+      energy: "e",
+      eqby: ["\\stackrel{#1}{=}",1],
+    }
+  }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+ -->
+
+  <link rel="stylesheet" type="text/css" href="css/index.css" />
+  <link rel="stylesheet" type="text/css" href="css/steps.css" />
+  <link rel="stylesheet" type="text/css" href="css/aussois-styles.css" />
+  <link rel="stylesheet" type="text/css" href="css/joris_styles.css" />
+<!-- <script src="/Users/natura/Downloads/less.js/dist/less.js" ></script> -->
+
+</head>
+<body>
+<div id="impress" data-perspective="0" data-min-scale="1" data-max-scale="1" data- data-transition-duration="0">
+
+  <div id="step-title-joris" class="step title-joris" data-x="4000" data-y="5000" data-z="0" data-scale="1">
+        <div class="talk_title_container">
+            <div class="talk_title">
+              <div style="font-size:130%;margin-bottom:0.2em;">Layered-Least-Squares <br> Interior Point Methods</div>
+            </div>
+            <div class="talk_subtitle">
+              <div style="font-size:130%;margin-bottom:0.2em;">a combinatorial optimization perspective</div>
+            </div>
+          </div>
+          <div class="talk_author_container">
+             <div class="talk_author_name" style="margin-bottom: 0.3em;"> L&aacute;szl&oacute; V&eacute;gh<span class="superscript">&nbsp;</span></div>
+            <div class="talk_author_affiliation">London School of Economics</div>
+          </div>
+             <img src="./data/dan.jpg" style="float:left; height: 150px; margin: 0px 20px 0px 20px;"/>
+           <img src="./data/Sophie.jpg" style="float:left; height: 150px; margin: 0px 20px 0px 20px;"/>
+           
+           <img src="./data/dan.jpg" style="float:right; visibility: hidden; height: 150px; margin: 0px 20px 0px 20px;"/>
+            <img src="./data/Bento.jpg" style="float:right; height: 150px; margin: 0px 20px 0px 20px;"/>
+            <div class="talk_author_container">
+               <div class="talk_author_affiliation" style="margin-bottom: 0.3em;">
+              joint work with</div>
+            <div class="talk_author_name" style="margin-bottom: 0.3em;">
+              Daniel Dadush, Sophie Huiberts (CWI),
+              <br> and <br> Bento Natura (LSE)<span class="superscript">&nbsp;</span> </div>
+          </div>
+        <div class="talk_occasion">UIUC, ISE Graduate Seminar<br> 18 Sep 2020</div>
+        <div class="text_centered" style="margin-top: 1em;">
+          <!-- <img src="../../presentations_shared/images/logo_huygens_ing_0.30.gif" style="height: 85px; margin: 0px 20px 0px 20px;"/> -->
+          <img src="./data/cwi-logo.png" style="height: 120px; margin: 0px 20px 0px 20px;"/>
+          <img src="./data/lse-logo.png" style="height: 120px; margin: 0px 20px 0px 20px;"/>
+
+        </div>
+      </div> 
+
+
+<!-- <div id="step-title" class="step"
+  data-x="5000" data-y="5000" data-z="0">
+  <div  style="position: relative;
+  top: 50%;
+  transform: translateY(-60%);">
+  <h1 class="title">A scaling invariant algorithm for Linear Programming</h1>
+
+  <p>Bento Natura</p>
+  <p>
+    Department of Mathematics<br>
+    London School of Economics
+  </p>
+  </div>
+</div> -->
+
+<div id="step-LP-formulation" class="step" data-rel-x="3000" data-rel-y="0" data-rel-z="0" data-scale="1" >
+  <h2 class="center-text">Linear Programming</h2>
+
+    <p>
+    In standard form for $$A \in \mathbb{Q}^{m \times n}$$, $$b\in \mathbb{Q}^m$$, $$c\in \mathbb{Q}^n$$,
+<font class="fr">
+    $$$
+      \begin{aligned}
+      \min \; &c^\top x & \max \; & y^\top b \\
+      Ax& =b & \qquad A^\top y + s &= c \\
+      x &\geq 0 & s & \geq 0 \\
+      \end{aligned}
+      $$$
+    </font>
+  </p>
+  <center>
+  <img src="./data/lp-pic.png" style="position: relative; top: 20px;" height="200px"/>
+  </center>
+
+  <!-- <canvas class="center-block" width="800px" height="400px"></canvas> -->
+</div>
+
+<!-- <div id="step-LP-motivation" class="step">
+  <h2> Motivation - Background</h2>
+  pretty obvious. Might leave empty.
+</div> -->
+
+
+<div id="step-timeline" class="step timeline-slide">
+  <h2 class="center-text"> Timeline </h2>
+  <!-- <div style="float:right; padding-top: 50px; padding-right: 50px"> </div> -->
+  <div id="timeline-content" style="margin-left: 150px; font-size: 20px;">
+      <ul class="timeline" style="width: 70%">
+          <li class="event" data-date="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?">
+              <img src="./data/holygrail.png" style="height: 150px; float: right"/>
+              <h3> Strongly polynomial algorithm for LP </h3>
+              <font class="ref"> Smale's 9th question </font>
+            </li>
+          <li class="event" data-date="1980s">
+             <h3>Interior point methods</h3>
+             <font class="ref"> Karmarkar </font>
+            </li>
+        <li class="event" data-date="1970s">
+          <h3> Ellipsoid Method </h3>
+          <font class="ref">Khachiyan</font>
+        </li>
+        <li class="event" data-date="1940s">
+          <h3>Simplex Method </h3>
+          <font class="ref">Dantzig</font>
+        </li>
+        <li class="event" data-date="1820s">
+          <h3>Origins</h3>
+          <font class="ref">Fourier</h3>
+      </ul>
+    </div>
+</div>
+
+<div id="step-weakly-vs-strongly-polynomial" class="step">
+    <h2 class="center-text">Weakly vs Strongly Polynomial Algorithms for LP</h2>
+LP with <font class="fr"> $$n$$</font> variables, <font class="fr">$$m$$ </font>constraints
+<br>
+ <font class="fr">$$L$$</font>: encoding length of the input.
+<p >
+    <fieldset style="border: 1px black solid; height: 50%; width: 45%; margin:0; float:left">
+
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em; margin: 0 ">weakly polynomial</legend>
+        <ul style="list-style-type:disk;">
+          <li>
+             <font class="fr"> $$\mathrm{poly}(m,n,L)$$ </font> basic arithmetic operations.
+          </li>
+        </ul>
+        </fieldset>
+
+        <fieldset style="border: 1px black solid; height: 50%; width: 45%; margin:0; float:left">
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">strongly polynomial</legend>
+        <ul style="list-style-type:disk;">
+          <li>
+            <font class="fr">$$\mathrm{poly}(m,n)$$</font> basic arithmetic operations.
+           </li>
+           <li>
+            <font class="fr"> PSPACE</font>: all numbers occurring in the algorithm must remain polynomially bounded in input size.
+           </li>
+        </ul>
+        </fieldset>
+      </p>
+      <br>
+<p >
+  <br>
+              Standard variants of Ellipsoid and interior point methods: running time bound heavily
+relies on <font class="fr">$$L$$</font>.
+                </p>
+</div>
+
+<div id="step-strongly-polynomial-algorithms-for-LP" class="step">
+    <h2 class="center-text">Strongly Polynomial Algorithms for LP</h2>
+    <fieldset style="border: 1px black solid">
+
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Network flow problems</legend>
+        <ul class="lst">
+          <li>
+Maximum flow: <font class="ref">Edmonds&ndash;Karp&ndash;Dinitz '70-72</font>
+<li>
+Min-cost flow: <font class="ref">Tardos '85</font>
+</li>
+</ul>
+<!--
+          <li>
+            If $$A$$ integral and $$|\mathrm{det}(B)| \leq \Delta$$ for square submatrices, then LP solvable in time $$\mathrm{poly}(m,n,\Delta)$$[T86].
+          </li>
+          <li>
+            LP solvable in $$O(n^{3.5}\log\bar\chi_A)$$ linear system solves, where $$\bar\chi_A = O(2^{L_A})$$ [VY96].
+          </li>
+        </ul>-->
+        </fieldset>
+        <br>
+        <fieldset style="border: 1px black solid">
+
+            <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Special classes of LP</legend>
+            <ul class="lst">
+              <li>
+               Feasibility of 2-variable-per-inequality systems: <font class="ref">Megiddo '83</font>
+              </li>
+               <li>
+                Discounted Markov Decision Processes: <font class="ref"> Ye '05, Ye '11 </font>
+              </li>
+              <li>
+               Maximum generalized flow problem: <font class="ref"> V. '17, Olver&ndash;V. '20</font>
+              </li>
+              <li>
+                ...
+              </li>
+            </ul>
+            </fieldset>
+</div>
+
+<!--
+<div id="step-strongly-polynomial-general-0" class="step" data-rel-x="0" data-rel-y="1.0h" data-rel-to="step-strongly-polynomial-algorithms-for-LP">
+</div>
+-->
+
+<div id="step-strongly-polynomial-general-1" class="step">
+      <h2 class="center-text">Dependence on the constraint matrix only</h2>
+      <p>
+       <font class="fr"> $$$\min c^\top x,\, Ax=b,\, x\ge 0$$$</font>
+       Running time dependent only on constraint matrix $$A$$, <span class="em2"> but not on</span> $$b$$ and $$c$$.
+      </p>
+      <fieldset style="border: 1px black solid;">
+
+          <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">General LP</legend>
+          <ul class="lst">
+            <li>
+              <font class="ref">'Combinatorial LPs'</font>
+              <br>
+              If $$A$$ integral and $$|\mathrm{det}(B)| \leq \Delta$$ for all square submatrices of $$A$$, then LP solvable in <font class="fr">$$\mathrm{poly}(m,n,\log\Delta)$$</font> arithmetic operations: <font class="ref">Tardos '86</font>
+            </li>
+            <li>
+              <font class="ref">'Layered-least-squares (LLS) Interior Point Method'</font><br>
+              LP solvable in <font class="fr">$$O(n^{3.5}\log\bar\chi_A)$$ </font> linear system solves:
+              <font class="ref">Vavasis&ndash;Ye '96</font>
+              <!-- <span class="em2">, but algorithm is not scaling invariant!</span>-->
+            </li>
+          </ul>
+          </fieldset>
+</div>
+
+<div id="step-strongly-polynomial-general-2" class="step">
+      <h2 class="center-text">Dependence on the constraint matrix only</h2>
+      <p>
+       <font class="fr"> $$$\min c^\top x,\, Ax=b,\, x\ge 0$$$</font>
+       Running time dependent only on constraint matrix $$A$$, <span class="em2"> but not on</span> $$b$$ and $$c$$.
+      </p>   
+      <p>
+              <font class="ref">'Layered-least-squares (LLS) Interior Point Method'</font><br>
+              LP solvable in <font class="fr">$$O(n^{3.5}\log\bar\chi_A)$$ </font> linear system solves:
+              <font class="ref">Vavasis&ndash;Ye '96</font></p>
+<p>
+        <fieldset style="border: 1px black solid">
+              <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Condition number <font class="fr"> $$\bar\chi_A$$</font></legend>
+              <ul class="lst">
+                <li>
+            $$\bar\chi_A = O(2^{L_A})$$. 
+          </li>
+          <li>
+            Governs the stability of layered-least-squares solutions.
+          </li>
+          <li>
+                Depends only on the subspace $$\ker(A)$$. 
+                </li>
+                <li>
+                  NP-hard to approximate within a factor <font class="fr">$$2^{\mathrm{poly}(\mathrm{rank}(A))}$$</font>: <font class="ref">Tun&ccedil;el '99</font>
+                </li>
+                <!--
+                <li>Let $$\bar\chi_A^* := \inf\{\bar\chi_{AD}: D \text{ diagonal, positive definite}\}$$</li> be the optimal rescaling.
+              -->
+              </ul>
+              </fieldset>
+            </p>
+            <!--
+          <fieldset style="border: 1px black solid; position: relative; top: -10px">
+              <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Condition number <font class="fr"> $$\bar\chi_A$$</font></legend>
+          <b>Lifting cost definition:</b> $$\bar\chi_A$$ is the
+minimum number $$M \geq 1$$
+such that for all $$I \subseteq [n]$$ and $$x \in \pi_I(\ker(A))$$,
+there exists $$\hat{x} \in \ker(A)$$ satisfying $$\hat{x}_I = x$$ and
+$$\|\hat{x}\| \leq M \|x\|$$. </br></br>
+
+<b> Ex: </b> If $$(1,2,*,*) \in \ker(A)$$, $$\exists (1,2,x,y) \in \ker(A)$$
+with $$\|(1,2,x,y)\| \leq M\|(1,2)\|$$.</br>
+
+          <ul class="lst">
+          <li>
+            Depends only on the subspace $$\ker(A)$$.
+          </li>
+          <li> $$\bar\chi_A = O(2^{L_A})$$. </li>
+          <li>
+          Governs the stability of <font class="fr">LLS</font> steps.
+          </li>
+           <li>
+             NP-hard to approximate within a factor <font
+class="fr">$$2^{\mathrm{poly}(\mathrm{rank}(A))}$$</font>: <font
+class="ref">Tun&ccedil;el '99</font>.
+                </li>
+ 
+              </ul>
+              </fieldset>-->
+</div>
+
+<!--
+
+<div id="step-central-path-visualisation" class="step">
+    <h2> The central path </h2>
+  <div class="box" style="width: 55%">
+    <ul class="lst">
+      <li>
+    For each $$\mu>0$$, there exists a unique solution <font class="fr">$$w(\mu)=(x(\mu),y(\mu),s(\mu))$$</font> such that
+    <font class="fr">
+      $$$x(\mu)_i s(\mu)_i=\mu\quad \forall i\in [n]$$$
+    </font>
+    This is called the <span class="em2">central path element</span> for $$\mu$$.
+  </li>
+  <li>
+ The <span class="em2">central path (CP)</span> is the algebraic curve
+ <font class="fr">
+      $$$\{w(\mu): \mu>0\}$$$
+    </font>
+  </li>
+  <li>
+    For <font class="fr">$$\mu\to 0$$</font>, the central path converges to an optimal solution
+    <font class="fr">$$w^*=(x^*,y^*,\mu^*)$$</font>
+  </li>
+    </ul>
+             </div>
+
+  <div class="box" style="width: 45%; padding-top: 50px">
+      <img src="data/central_path.png" style="height: 65%;">
+  </div>
+
+</div>
+-->
+
+<div id="step-is-there-scale-invariance-1" class="step">
+    <h2 class="center-text">Scale Invariance</h2>
+        <h5>
+       <font class="fr">
+    $$$
+      \begin{aligned}
+      \min \; &c^\top x & \max \; & y^\top b \quad \text{(LP)} \\
+      Ax& =b & \qquad A^\top y + s &= c \\
+      x &\geq 0 & s &\geq 0 \\
+      \end{aligned}
+      $$$
+       </font>
+     </h5>
+    <font class="fr">$$A\in \R^{m\times n}$$.</font> Let <font class="fr">$$\mathbf{D}$$</font> denote the set of $$n\times n$$ positive diagonal matrices.
+    <ul class="lst">
+       <li> <span class="em2">Diagonal rescaling (LP') of (LP):</span>
+Replace $$A'=AD$$, $$c'=Dc$$, $$b'=b$$ for some $$D\in \mathbf{D}$$.
+      </li>
+      <li>
+        <span class="em2">Central path is invariant under rescaling</span>:
+central path of (LP) mapped to that of (LP') by $$(x(\mu),s(\mu),y(\mu))
+\rightarrow (D^{-1}x(\mu), Ds(\mu),y(\mu))$$.
+      <li>
+        Standard interior point methods are <span class="em2">invariant</span> under rescaling.
+      </li>
+      <li>
+        The Vavasis&ndash;Ye (<font class="fr">VY</font>) algorithm is <span class="em2">not scaling
+invariant</span>: </br>
+<font class="fr">LLS</font> steps solve linear system indexed by the current variable ordering </br>
+$$x_{\pi[1]} > \cdots > x_{\pi[n]}$$ and the ratios $$x_{\pi[i]}/x_{\pi[i+1]}$$,
+$$i \in [n-1]$$.
+      </li>
+      <li>
+        <font class="fr"> VY </font> Algorithm uses $$O(n^{3.5} \log\bar\chi_A)$$ LLS steps [VY96].
+      </li>
+    </ul>
+</div>
+
+<!--
+<div id="step-is-there-scale-invariance-2" class="step">
+    <h2 class="center-text">Scale Invariance of the Central Path</h2>
+        <h5>
+       <font class="fr">
+    $$$
+      \begin{aligned}
+      \min \; &c^\top x & \max \; & y^\top b \\
+      Ax& =b & \qquad A^\top y + s &= c \\
+      x &\geq 0 & s & \geq 0 \\
+      \end{aligned}
+      $$$
+       </font>
+     </h5>
+    -->
+    <!--
+    <h5 class="center-text em2"> ...which would automatically result in an algorithm depending on $$\bar\chi_A^*$$.</h5>
+    $$\bar\chi_A^*$$...optimal rescaling of $$A$$ minimizing $$\bar\chi_A$$.-->
+<!--
+    <font class="fr">$$A\in \R^{m\times n}$$.</font> Let <font class="fr">$$\mathbf{D}$$</font> denote the set of $$n\times n$$ positive diagonal matrices.
+    <ul class="lst">
+      <li>
+        Since <font class="fr">$$\bar\chi_A$$</font> only depends on
+          <font class="fr">$$\ker(A)$$</font>, we have  <font class="fr">$$\bar\chi_A=\bar\chi_{RA}$$</font> for any nonsingular $$R\in\R^{m\times m}$$.
+      </li>
+      <li>
+      However, we may have <font class="fr">$$\bar\chi_A\neq \bar\chi_{AD}$$</font>  for  $$D\in\mathbf{D}$$.
+      </li>
+      <li>
+        <span class="em2">Diagonal rescaling (scaling) of the problem:</span> Replace $$A'=AD$$, $$c'=Dc$$, $$b'=b$$ in the LP for $$D\in \mathbf{D}$$.
+      </li>
+      <li>
+         <span class="em2">Corresponding variables transformation:</span>  $$x'=D^{-1} x$$, $$y'=y$$, $$s'=D s$$.
+      </li>
+      <li>
+        Central path is <span class="em2">invariant</span> under rescaling.
+      <li>
+        Standard interior point methods are also <span class="em2">invariant</span> under rescaling.
+      </li>
+      <li>
+        The Vavasis&ndash;Ye algorithm is <span class="em2">not scaling invariant</span>
+      </li>
+        $$O(n^{3.5} \log\bar\chi_A)$$ linear system solves [VY96].
+      </li>
+    </ul>
+</div>
+-->
+
+<div id="step-is-there-scaling-invariant-algorithm" class="step">
+    <h2 class="center-text">Is there a scaling invariant LLS interior point method?</h2>
+    <font class="fr">
+    $$$\bar\chi_A^* := \inf\{\bar\chi_{AD}: D\in \mathbf{D}\}.$$$</font>
+    <!--
+    <h5 class="center-text em2"> ...which would automatically result in an algorithm depending on $$\bar\chi_A^*$$.</h5>
+    $$\bar\chi_A^*$$...optimal rescaling of $$A$$ minimizing $$\bar\chi_A$$.-->
+    <ul class="lst">
+      <li>
+A scaling invariant version of <font class="ref">LLS</font> would automatically
+give </br>
+<font class="fr"> $$O(n^{3.5} \log\bar\chi_A^*)$$ </font> iterations instead of <font
+class="fr">$$O(n^{3.5}
+\log\bar\chi_A)$$</font> iterations.</li>
+      <li> <font class="fr">$$\bar{\chi}^*_{A}$$</font> can be arbitrarily smaller than
+<font class="fr">$$\bar{\chi}_A$$.</font> <!--e.g., </br>
+<font class="fr">$$\ker(\begin{pmatrix} M & -1 \end{pmatrix}) = {\rm span}(1,M)$$</font> vs <font
+class="fr">$$\ker(\begin{pmatrix} M & -1 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 0 & M\end{pmatrix}) = {\rm span}(1,1)$$</font>.</br></li>-->
+</ul>
+
+<b> Prior work: </b>
+<ul class="lst">
+<li>
+  The (scaling invariant) Mizuno&ndash;Todd&ndash;Ye Predictor-Corrector algorithm finds an $$\varepsilon$$-approximate solution in time
+      <font class="fr">  $$O(n^{3.5}\log\bar\chi_A^* + n^2\log\log(1/\varepsilon))$$</font>: <font class="ref">Monteiro&ndash;Tsuchiya '05</font>.
+            </li>
+      <li>
+       <font class="ref">$$O(n^{3.5}\log\bar\chi_A^*)$$</font> iterations scaling invariant algorithm, but each iteration depends on the bit-complexity $$b$$ and $$c$$: <font class="ref">Lan&ndash;Monteiro&ndash;Tsuchiya '09</class></font>.
+        <li> Results on the central path curvature from information geometry also suggest that <font class="ref">$$\bar\chi_A^*$$</font> should be the <font class="ref">`right'</font> dependence.
+      </li>
+    </ul>
+</div>
+<!--
+<div id="overview1" class="step" data-x="6000" data-y="5500" data-z="0" data-scale="4" >
+    </div>
+-->
+
+
+<!-- <div id="step-our-contributions-0" class="step">
+</div> -->
+
+<div id="step-our-contributions" class="step">
+    <h2 class="center-text"> Our contributions:
+Dadush&ndash;Huiberts&ndash;Natura&ndash;V. '20</h2>
+    <h3 class="center-text"> </h3>
+    <fieldset style="border: 1px black solid">
+
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em
+0.8em, font-size: 20px">A scaling invariant algorithm</legend>
+        We give a scaling invariant LLS interior point method, settling the open question posed by <font class="ref">Monteiro and Tsuchiya in '03</font>.
+        </fieldset>
+        <fieldset style="border: 1px black solid; position: relative; top: 7px">
+            <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Improved Runtime</legend>
+           We show a running time bound of <font class="fr">$$O(n^{2.5}\log(\bar\chi_A^\ast +n)\log n)$$</font> linear system solves. This is achieved via an improved analysis that also applies to the original <font class="ref">VY</font> algorithm.
+          </fieldset>
+        <fieldset style="border: 1px black solid; position: relative; top: 14px">
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Finding a nearly-optimal rescaling of $$A$$</legend>
+Given <font class="fr">$$A \in \R^{m \times n}$$</font>, in <font
+class="fr">$$O(n^2m^2 + n^3)$$</font> time, we can compute
+        <ol class="lst" style="position:relative; top:-20px">
+     <!--        <li>
+   <font class="ref">Tun&ccedil;el '99</font>: There exists no
+$$2^{\mathrm{poly}(\mathrm{rank}(A))}$$-approximation of <font class="ref">$$\bar\chi_A$$</font>.
+        </li> -->
+        <li> rescaling <font class="fr">$$D \in \mathbf{D}$$</font> satisfying
+         <font class="fr">
+$$ \bar\chi_A^*\le \bar\chi_{AD}\le n (\bar\chi_A^*)^3$$</font>.
+</li>
+<li> <font class="fr">$$t \geq 1$$</font> satisfying
+<font class="fr">$$t \leq \chi_A \leq n(\bar{\chi}_A^*)^2t$$</font>.
+          </li>
+       </ol>
+        </fieldset>
+</div>
+
+<div id="step-limitation" class="step">
+    <h2 class="center-text">Limitation</h2>
+    <div class="theorem"> <font class="ref"> [Allamigeon&ndash;Benchimol&ndash;Gaubert&ndash;Joswig '18]</font>
+      <br>
+      No standard path following method can be strongly polynomial.
+    </div>
+    <p> Proof using <span class="em2">tropical geometry</span>: studies the tropical limit of a family of parametrized linear programs.
+
+       <div class="box" style="float: right">
+      <img src="data/tropicalcentral.png" style="height: 55%;">
+  </div>
+</div>
+
+
+<div id="step-ipm-cover" class="step">
+    <h1 class="center-text">A crash course on Interior Point Methods</h1>
+
+  <div class="box" style="float: right">
+      <img src="data/central_path.png" style="height: 55%;">
+  </div>
+
+  </div>
+
+
+
+
+<!--
+  <p> <b> Standard LP Central Path (CP):</b>
+
+  <div class="box" style="float: right">
+      <img src="data/central_path.png" style="height: 55%;">
+  </div>
+
+    <font class="fr">
+    $$$
+    \begin{aligned}
+    Ax(\mu)& =b   \\
+    A^\top y(\mu) + s(\mu) &= c  \\
+    x_i(\mu) s_i(\mu) &= \mu, i \in [n] \\
+    x(\mu) &> 0, s(\mu) > 0.
+    \end{aligned}
+    $$$
+      </font>
+<font class="fr">
+$$$
+\begin{aligned}
+\text{CP} &:= \{w(\mu): \mu > 0\}, \\
+w(\mu) &:= (x(\mu),s(\mu),y(\mu)).
+\end{aligned}
+$$$
+</font>
+</p>-->
+
+
+<!-- <div id="step-overview-3" class="step" data-x="13000" data-y="11000" data-scale="12">
+</div> -->
+
+<!-- <div id="IPM-main" class="step"   data-scale="6" data-rel-x="1.0w" data-rel-y="-4.5h" data-rel-to="step-limitation">
+    <h2 class="center-text">A crash course in Interior Point Methods</h2>
+</div> -->
+
+<div id="step-complementary-slackness" class="step">
+  <h2 class="center-text">Complementary Slackness</h2>
+  <p>
+    <font class="fr">
+    $$$
+    \begin{aligned}
+    \min \; &c^\top x & \max \; & y^\top b \\
+    Ax& =b & \qquad A^\top y + s &= c \\
+    x &\geq 0 & s & \geq 0 \\
+    \end{aligned}
+      $$$
+      </font>
+      A feasible pair $$(x,s) \geq 0$$ is optimal if and only if
+$$x^\top s = 0 \Leftrightarrow x_i = 0$$ or $$s_i = 0, \forall i \in [n]$$.
+  </p>
+  <h2> Weak duality </h2>
+  <p>
+    $$$ c^\top x = (y^\top A + s^\top)x = y^\top b + \textcolor{red}{s^\top x} \geq y^\top b.$$$
+  </p>
+  <!--
+  <p>
+   For <font class="fr">CP</font> solution
+$$(x(\mu),s(\mu),y(\mu))$$, optimality gap is
+$$\textcolor{red}{s(\mu)^\top x(\mu)} = \sum_{i=1}^n s_i(\mu) x_i(\mu) =
+\textcolor{red}{n \mu}$$.-->
+</div>
+
+
+<div id="step-central-path-visualisation" class="step" data-rel-x="1.0w" data-rel-y="0" data-rel-z="0" data-rotate-x="0">
+    <h2 class="center-text"> The central path </h2>
+ <!--   <h5> <i> The central path and path following methods </i></h5>-->
+  <div class="box" style="width: 40%">
+      <img src="data/central_path.png" style="height: 80%;">
+  </div>
+  <div class="box" style="width: 60%">
+    <ul class="lst">
+      <li>
+    For each $$\mu>0$$, there exists a unique solution <font class="fr">$$w(\mu)=(x(\mu),y(\mu),s(\mu))$$</font> such that 
+    <font class="fr">
+      $$$x(\mu)_i s(\mu)_i=\mu\quad \forall i\in [n]$$$
+    </font>
+    This is called the <span class="em2">central path element</span> for $$\mu$$.
+  </li>
+  <li>
+ The <span class="em2">central path</span> is the algebraic curve formed by 
+ <font class="fr">
+      $$$\{w(\mu): \mu>0\}$$$
+    </font>
+  </li>
+  <li>
+    For <font class="fr">$$\mu\to 0$$</font>, the central path converges to an optimal solution
+    <font class="fr">$$w^*=(x^*,y^*,s^*)$$</font>.
+  </li>
+  <li>
+     The optimality gap is
+$$\textcolor{red}{s(\mu)^\top x(\mu)} = 
+\textcolor{red}{n \mu}$$.
+  </li>
+    </ul>
+
+        <!--    <p>
+                $$$ \begin{aligned}
+                  A \Delta x &= 0 \\
+                  A^\top \Delta y + \Delta s &= 0 \\ 
+                  S \Delta x + X \Delta s + Xs &= \sigma \mu e \\
+                  \textcolor{tan}{\textbf{Predictor: } \sigma} &\textcolor{tan}{= 0}  \\
+                  \textcolor{green}{\textbf{Corrector: } \sigma} &\textcolor{green}{= 1} \\
+                  \end{aligned}
+                  $$$
+                  $$$X = \text{diag}(x), S = \text{diag}(s)$$$
+             </p>-->
+             </div>
+    <!--  <p style="float: bottom; text-align: center">
+      $$
+      \textcolor{red}{\textbf{Central path}} = \cup_{\mu > 0}\{(x,s) > 0 : Xs = \mu e, Ax = b, A^\top y + s = c\}
+      $$
+      </p> -->
+</div>
+
+<div id="step-MTY" class="step">
+    <h2 class="center-text"> The Mizuno-Todd-Ye Predictor Corrector algorithm</h2>
+ <!--   <h5> <i> The central path and path following methods </i></h5>-->
+  <div class="box" style="width: 55%">
+    <ul class="lst">
+      <li style="margin-bottom:10px">
+        Start from point
+   <font class="fr">$$w^0=(x^0,y^0,s^0)$$</font>
+'near' the central path at some $$\mu^0>0$$.
+</li>
+<li style="margin-bottom:10px"> Alternate between two types of steps:
+</li>
+<li style="margin-bottom:10px">
+<span class="em2">Predictor steps:</span>  'shoot down' the central path, decreasing $$\mu$$ by a factor at least $$1- \beta/\sqrt{n}$$.
+<br>May move slightly 'farther' from the central path.
+<li style="margin-bottom:10px">
+<span class="em2">Corrector steps:</span>  do not change parameter $$\mu$$, but move back 'closer' to the central path.
+  </li>
+  <li style="margin-bottom:10px">
+    Within $$O(\sqrt n)$$ iteration, $$\mu$$ decreases by a factor 2.
+  </li>
+    </ul>
+</div>
+  <div class="box" style="width: 45%; padding-top: 50px">
+      <img src="data/central_path.png" style="height: 65%;">
+  </div>
+</div>
+
+<div id="step-newton" class="step">
+  <h2>Predictor Newton step</h2>
+  <p>
+    We obtain the step direction   <font class="fr">$$\Delta w=(\Delta x,\Delta y,\Delta s)$$</font> as  solutions to
+    <font class="fr">
+         <!-- \min \left\|\textrm{diag}^{-1}(x) (x+\Delta x)\right\|^2 &= -->
+  $$$\min\, \sum_{i=1}^n\left(\frac{x_i+\Delta x_i}{x_i}\right)^2 \quad
+            \text{s.t. } A\Delta x = 0
+            $$$
+             </font>
+<center>and</center>
+   <!--    \min \left\|\textrm{diag}^{-1}(s) (s+\Delta s)\right\|^2 &=-->
+              <font class="fr">
+            $$$  \min\,  \sum_{i=1}^n\left(\frac{s_i+\Delta s_i}{s_i}\right)^2 \quad
+            \text{s.t. } A^\top \Delta y + \Delta s = 0
+            $$$
+            </font>
+            Next iterate is obtained as
+          <font class="fr">$$$w'=w+\alpha \Delta w = (x+\alpha\Delta x,y+\alpha \Delta y, s+\alpha\Delta s)$$$</font>
+          for some $$\alpha\in [0,1]$$. Set $$\alpha$$ large as possible subject
+to not moving too far away from the path.
+        </p>
+
+</div>
+
+  <div id="step-primal-dual-animation" class="step" >
+      <h3 class="center-text"><i>Changes of $$x_i$$ and $$s_i$$ variables in the MTY Predictor-Corrector algorithm</i></h1>
+      <h4 class="center-text i"> <i> Press key "i" to run iteration </i></h4>
+      <div style="width: 80%; margin: auto">
+        <canvas style="text-align: center" id="chart_canvas2"></canvas>
+        <!-- <progress id="animationProgress2" max="1" value="0" style="width: 100%"></progress> -->
+      </div>
+      <br>
+      <br>
+  </div>
+
+
+<div id="step-interior-point-method-success" class="step">
+  <h2 class="center-text">Recent weakly polynomial IPM successes</h2>
+       <font class="fr"> $$$\min c^\top x,\, Ax=b,\, x\ge 0$$$</font>
+  <ul class="lst">
+    <li>Randomized <font class="fr">$$\tilde{O}(\sqrt{m}(\mathrm{nnz}(A) + m^2)L)$$</font> algorithm,  where $$\mathrm{nnz}$$ is the number of non-zeros: <font class="ref">Lee&ndash;Sidford '14-15</font>
+    </li>
+    <li>Randomized algorithm in 'current' matrix multiplication time <font class="fr">$$\tilde{O}(n^\omega L)$$</font>, <br> $$\omega \approx 2.37$$: <font class="ref">Cohen&ndash;Lee&ndash;Song '18</font></li>
+    <li>Deterministic algorithm  with same runtime: <font class="ref">van den Brand '20</font></li>
+    <li><font class="fr">$$\tilde{O}(mn+m^3) L)$$</font>: <font class="ref">vdBLSS '20</font></li>
+    
+
+  </ul>
+  <h3> For special problems: </h3>
+  <ul>
+    <li><font class="fr">$$\tilde{O}(m^{3/2} \log^2(U/\varepsilon))$$</font> algorithm for an additive $$\varepsilon$$ approximation for lossy generalized flow problems: <font class="ref">Daitch&ndash;Spielman '08</font></li>
+    <li><font class="fr">$$\mathcal{O}(m^{10/7})$$</font> algorithm for max $$s$$-$$t$$ flow and min $$s$$-$$t$$ cut problems in directed graphs with unit capacities: <font class="ref">M&#261;dry '13</font></li>
+  </ul>
+</div>
+
+  <!-- <div id="step-near-monotonicity" class="step" data-goto-key-list="ArrowDown ArrowRight"
+  data-goto-next-list="step-near-monotonicity-proof step-geometric-progress">
+
+    <h2> Near-Monotonicity </h2>
+      <p style="text-align: center">
+          $$
+          \textcolor{red}{\textbf{Central path}} = \cup_{\mu > 0}\{(x,s) > 0 : Xs = \mu e, Ax = b, A^\top y + s = c\}
+          $$
+
+          <p>
+    <div class="lemma">
+        Let $$w = (x, y, s)$$ be a central path point for $$\mu$$ and $$w' = (x',
+        y', s')$$ be a central path point for $$\mu' \leq \mu$$. Then
+        $$\|x'/x + s'/s\|_\infty \leq n$$. Further, for the optimal
+        solution $$w^*=(x^*,y^*,s^*)$$ corresponding to the central path limit
+        $$\mu\to 0$$, we have  $$\|x^*/x\|_1 + \|s^*/s\|_1 = n$$.
+      </div>
+      </p>
+      <p>
+        <div class="proof">
+              We now show $$\|x'/x\|_1 + \|s'/s\|_1
+              \leq 2n$$ and the second statement. For the proof of the first
+              statement $$\|x'/x + s'/s\|_\infty \leq n$$, see the proof of [VY96].
+              Since $$x-x'\in W$$ and $$s-s'\in W^\perp$$, we have $$(x-x')^\top
+              (s-s')=0$$. This can be rewritten as $$x^\top s'+(x')^\top s=x^\top s+
+              (x')^\top s'$$. The right hand side here equals $$n\mu+n\mu'$$. Dividing by
+              $$\mu$$, and noting that $$x_is_i=\mu$$ for all $$i\in [n]$$, we obtain
+              $$$
+              \left\|\frac{x'}{x}\right\|_1+\left\|\frac{s'}{s}\right\|_1=\sum_{i=1}^n \frac{x'_i}{x_i}+\frac{s'_i}{s_i} = n\left(1+\frac{\mu'}{\mu}\right)\, .
+              $$$
+              Hence $$\|x'/x\| + \|s'/s\|_1 \leq 2n$$ by $$\mu'\le \mu$$. We get the
+              second statement by taking the limit $$\mu'\to 0$$.
+          </div>
+          </p>
+  </div>
+
+  <div id="step-geometric-progress" class="step">
+
+    <h2> Geometric progress in affine scaling</h2>
+      <p style="text-align: center">
+          $$
+          \textcolor{red}{\textbf{Central path}} = \cup_{\mu > 0}\{(x,s) > 0 : Xs = \mu e, Ax = b, A^\top y + s = c\}
+          $$
+          </p>
+          <p>
+    <div class="lemma">
+        In $$O(\sqrt{n})$$ affine scaling iterations, the duality gap decreases by a factor 2: Let $$\mu$$ be the initial duality gap and let $$\mu'$$ be the duality gap after $$O(\sqrt{n})$$ iterations, then
+        $$$\log\left(\frac{\mu}{\mu'}\right) \geq 2.$$$
+    </div>
+  </p>
+  </div> -->
+
+<!--
+  <div id="step-properties-of-the-central-path" class="step">
+      <h2>Properties of the central path</h2>
+      <p style="text-align: center">
+          $$
+          \textcolor{red}{\textbf{Central path}} = \cup_{\mu > 0}\{(x,s) > 0 : Xs = \mu e, Ax = b, A^\top y + s = c\}
+          $$
+          <p>
+      <div style="height: 200px">
+      <q>Variables increase at most by a factor $$n$$ if we go further down the path.</q>
+      </div>
+      <q>
+        We can decrease $$\mu$$ by a constant factor in polynomially many iterations.
+      </q>
+  </div>
+
+
+-->
+
+
+
+<!-- <div id="Chi-main" class="step"   data-scale="6" data-rel-x="0.5w" data-rel-y="3h">
+    <h2 class="center-text">The mysterious $$\bar\chi_A$$</h2>
+    <h3 class="center-text">through a matroidal lens</h3>
+</div> -->
+
+
+<div id="step-bar-chi-cover" class="step">
+    <h1 class="center-text">The mysterious $$\bar\chi_A$$</h1>
+
+    <h2 class="center-text">through a matroidal lens</h3>
+  </div>
+
+
+
+<div id="step-chi-bar-definition" class ="step scroll">
+<h2 class="center-text">The condition number $$\bar\chi_A$$</h2>
+<div class=definition>
+  <font class="fr">
+$$$
+\bar\chi_A:=\sup\left\{\|A^\top \left(A D A^\top\right)^{-1}AD\|\, : D\in
+    {\mathbf D}\right\}
+$$$
+</font>
+Introduced by <font class="ref">Dikin '67, Stewart '89, Todd '90, ...</font>
+  </div>
+<h3>A convenient characterization: lifting cost</h3>
+</b> $$\bar\chi_A$$ is the
+minimum number $$M \geq 1$$
+such that for all $$I \subseteq [n]$$ and $$x \in \pi_I(\ker(A))$$,
+there exists $$\hat{x} \in \ker(A)$$ satisfying $$\hat{x}_I = x$$ and
+$$\|\hat{x}\| \leq M \|x\|$$. </br></br>
+
+<b> Ex: </b> If $$(1,2,*,*) \in \ker(A)$$, $$\exists (1,2,x,y) \in \ker(A)$$
+with $$\|(1,2,x,y)\| \leq M\|(1,2)\|$$.</br>
+<!--
+For $$W=\ker(A)$$. Recall that $$\bar\chi_A$$ only depends on the subspace $$W$$.
+<br>
+Define the <span class="em2">lifting map</span>
+    $$L_I^W : \mathrm{proj}_I(W) \to W$$ by
+  <font class="fr">
+ $$$
+L_I^W(v) := \argmin\left\{\|w\| : w_I = v, w \in W\right\}.
+$$$
+</font>
+    <div class=theorem>
+ <font class="fr">
+$$$
+\quad\bar{\chi}_A =\max\left\{ \|L_I^W\|\, : {I\subseteq [n]}, I\neq\emptyset\right\}\, .
+$$$
+</font>
+</div>-->
+</div>
+
+
+<div id="step-chi-bar-properties" class="step" >
+    <h2 class="center-text">Properties of $$\bar\chi_A$$</h2>
+    <p>
+    $$$
+    \bar\chi_A=\sup\left\{\|A^\top \left(A D A^\top\right)^{-1}AD\|\, : D\in
+    {\mathbf D}\right\}
+    $$$
+    We also use $$\bar \chi_W=\bar\chi_A$$ for the subspace $$W=\ker(A)$$.
+    </p>
+    <span class="lemma"> The following hold:
+    <ol class="romanlist">
+    <li style="margin-top: 10px"><span style="padding-left: 50px">If $$A \in \Z^{n \times m}$$ then $$\bar\chi_A$$ is bounded by $$2^{O(L_A)}$$,
+        where $$L_A$$ is the input bit length of $$A$$.</span>
+       </li>
+<li style="margin-top: 10px"><span style="padding-left: 50px">$$\bar\chi_A = \max\left\{ \|B^{-1} A\| : B
+\text{ non-singular } m \times m \text{ submatrix of } A\right\}.$$</span>
+    </li>
+    <li style="margin-top: 10px"><span style="padding-left: 50px"> $$\bar\chi_W=\bar\chi_{W^\perp}.$$ </span>
+    </li>
+  </ol>
+  </span>
+</div>
+
+<!-- <div id="step-rounding-0" class="step"
+   style="height:3000px">
+</div> -->
+
+<div id="step-rounding-1" class="step">
+
+  <h2 class="center-text">Application:
+   Final rounding step in standard IPMs</h2>
+           <h5>
+      <!-- <font class="fr"> -->
+    $$$
+      \begin{aligned}
+      \min \; &c^\top x & \max \; & y^\top b \\
+      Ax& =b & \qquad A^\top y + s &= c \\
+      x &\geq 0 & s & \geq 0 \\
+      \end{aligned}
+      $$$
+       </font>
+     </h5>
+     <ul class="lst">
+      <li>
+There exists a partition <font class="fr">$$[n]=B^*\cup N^*$$</font> and optimal <font class="fr">$$(x^*,y^*,s^*)$$</font> such that <font class="fr">$$B^*=\mathrm{supp}(x^*),\, N^*=\mathrm{supp}(s^*)$$</font>.</li>
+<li> Given <font class="fr">$$w=(x,y,s)$$</font> close to the central path with 'small enough'
+<font class="fr">$$\mu=x^\top s/n$$</font>,<br> such that for each <font
+class="fr">$$i\in [n]$$</font>,
+either <font class="fr">$$x_i \geq Ms_i$$</font> or <font class="fr">$$x_i \leq
+s_i/M$$</font> for <font class="fr">$$M$$</font> "very large".
+</li>
+<li>
+Assume we correctly 'guess' the optimal partition <font
+class="fr">$$B^*,N^*$$</font> via
+  <font class="fr">
+    $$$B:=\{i: x_i \gt s_i\},\quad N:=\{i: x_i \leq s_i\}.$$$
+  </font>
+</li>
+<li> We now have <font class="fr">$$x_i \geq M x_j$$</font> and <font
+class="fr">$$M s_i \leq s_j$$</font> for <font class="fr">$$i \in B$$</font> and
+<font class="fr">$$j \in N$$</font>.
+</li>
+</ul>
+</div>
+
+<div id="step-rounding-2" class="step">
+
+  <h2 class="center-text">Application:
+   Final rounding step in standard IPMs</h2>
+           <h5>
+<p>
+We will move to <font class="fr">$$\bar{w}=w+\Delta w :=
+(\bar{x},\bar{s},\bar{y})$$</font> such that <font class="fr">$$\mathrm{supp}(\bar{x})\subseteq
+B$$, $$\mathrm{supp}(\bar{s})\subseteq N$$, $$\bar{x},\bar{s}\ge 0$$.</font> </br>
+If we succeed, <font class="fr">$$\bar{x},\bar{s}$$</font> are optimal since
+<font class="fr">$$\bar{x}^{\top} \bar{s} = 0$$</font>.
+</p>
+
+<p>
+<span>For this purpose, we will compute <font class="fr">$$(\Delta x,\Delta
+s,\Delta y)$$</font> satisfying </span>
+  <font class="fr">$$$A\Delta x=0,\, \Delta x_N=-x_N,\, A^\top \Delta y+\Delta
+s=0, s_B=-s_B,$$$</font>
+together with <font class="fr">$$x+\Delta x\ge0,\, s+\Delta s\ge 0$$</font>. For
+this last inequality, it suffices to achieve
+
+<font class="fr" style="position: relative; left: -40px">
+  $$$\|\Delta x_B\|\leq \min_{i \in B} x_i,\, \|\Delta s_N\|\leq \min_{j \in N} s_j.$$$
+</font>
+</p>
+
+<p>
+<span style="float:left">Natural choices are</span>
+   <font class="fr" style="position: relative; left: -40px">
+ $$$\begin{aligned}
+  \Delta x&:=\arg\min\left\{ \|u\| : u_N=-x_N, A u=0\right\}, \\
+  \Delta s&:=\arg\min\left\{\|v\| : v_B=-s_B, A^\top z +v=0\right\}.
+  \end{aligned}
+  $$$
+</font>
+</p>
+
+<p>
+  <span style="float:left"> For the above choice, we have </span>
+<font class="fr" style="position: relative; left: -200px">
+$$$
+\begin{aligned}
+  \|\Delta_B x\| &\le {\textcolor{red}{\bar\chi_A}} \|x_N\| \leq
+\frac{n{\textcolor{red}{\bar\chi_A}}}{M}  \min_{i \in B} x_B,
+\\
+  \|\Delta_N s\| &\le {\textcolor{red}{\bar\chi_A}}\|s_B\| \leq
+\frac{n{\textcolor{red}{\bar\chi_A}}}{M} \min_{j \in N} s_j.
+\end{aligned}
+$$$.
+</font>
+</p>
+</div>
+
+<div id="step-circuit-imbalance" class="step">
+    <h2 class="center-text">The circuit imbalance measure</h2>
+    <h4 class="center-text">...the "combinatorial" sister of $$\bar\chi_A$$</h4>
+    <div class=definition>
+    A <span class="em2">circuit</span> of $$A$$ is a minimal linearly dependent subset of columns $$C \subseteq [n]$$. Let $$\mathcal{C}$$ denote the set of all circuits.
+    </div>
+    <div class=definition>
+      The circuit imbalance between $$i,j\in [n]$$ is
+      <font class="fr"> $$$\kappa_{ij} := \max\left\{\left|\frac{g_j}{g_i} \right|: \{i,j\} \subset \mathrm{supp}(g),\, Ag=0,\, \mathrm{supp}(g) \in \mathcal{C}\right\}$$$</font>
+      The <span class="em2">circuit imbalance measure</span> of $$A$$ is
+       <font class="fr" style="padding-left: 20px"> $$\kappa_A:=\max_{i,j\in [n]}\kappa_{ij}$$</font>
+     </div>
+<div class=lemma> If $$A$$ is a TU-matrix, then $$\kappa_A=1$$. More generally, if $$A$$ is integer, then $$\kappa_A\le \Delta$$, where $$\Delta$$ is the max. subdeterminant.
+</div>
+
+     <div class=theorem> <font class="ref"> [DHNV20]</font>
+      <font class="fr" style="padding-left: 50px">
+        $$\sqrt{1+\kappa_A^2}\le \bar\chi_A \le \sqrt{1+(n\kappa_A)^2}.$$
+      </font>
+     </div>
+     <!--
+     <div class=proof>
+      (First inequality) Let $$\kappa_A=|g_j|/|g_i|$$ for some $$g$$ such that $$Ag=0$$, $$i,j\in\mathrm{supp}(g)=C$$.
+      <br>
+      Let $$I=([n]\setminus C)\cup\{i\}$$
+     </div>-->
+</p>
+</div>
+
+<div id="step-near-opt-kappa" class="step" >
+  <h2 class="center-text">The optimal rescaling $$\kappa^*_A$$</h2>
+  <font class="fr"> $$$\kappa^*_A:=\inf\{\kappa_{AD}: D\in \mathbf{D}\}.$$$</font>
+  A near-optimal rescaling $$D$$ for $$\kappa_{AD}$$ will be near-optimal for $$\bar\chi_{AD}$$
+  <br>
+  <p>
+  <span class="em2">Example:</span> Let $$\ker(A)=\mathrm{span}((0,1,1,M),(1,0,M,1))$$.
+  <br>
+  Thus, $$\{2,3,4\}$$ and $$\{1,3,4\}$$ are circuits, and $$\kappa_A\ge M$$.
+  <br> Can we find a $$D$$ such that $$\kappa_{AD}$$ is small?
+</p>
+</div>
+
+
+<div id="step-cycle-invariant" class="step">
+  <h2 class="center-text"> Cycles are invariant under rescalings </h2>
+  <!-- <h4 class="center-text">...that is, cycles of circuits</h4> -->
+  <center>
+    <img src="./data/circuits_cycle.png" style="height: 300px"/>
+  </center>
+    <div class="theorem"> <font class="ref">[DHNV20]</font>
+      <font class="fr">
+        $$$\kappa^*_A=\max\left\{\prod_{(i,j)\in H} \kappa_{ij}^{1/|H|}:\, H \textrm{ is a cycle in the complete graph on }[n]\right\}$$$
+      </font>
+</div>
+</div>
+
+<div id="step-kappa-lower" class="step">
+  <h2 class="center-text">Approximating $$\kappa^*_A$$</h2>
+  <div class="theorem"> <font class="ref">[DHNV20]</font>
+      <font class="fr">
+        $$$\kappa^*_A=\max\left\{\prod_{(i,j)\in H} \kappa_{ij}^{1/|H|}:\, H \textrm{ is a cycle in the complete graph on }[n]\right\}$$$
+      </font>
+</div>
+<p>
+  <ul class="lst">
+    <li><span class="em2">Algorithmically,</span> the optimal rescaling can be obtained via a minimum-mean cycle computation for the costs $$c_{ij}=-\log\kappa_{ij}$$.
+    </li>
+    <li>
+     <span class="em2">Minor caveat:</span>  computing $$\kappa_{ij}$$ values is NP-complete
+   </li>
+   <li>
+   <span class="em2"> Luckily,</span> for any $$g\in \ker(A)$$ with $$i,j\in \mathrm{supp}(g)\in \mathcal{C}$$,
+    <font class="fr">
+     $$$ |g_j/g_i|\ge \kappa_{ij}/(\kappa^*_A)^2.$$$
+        </font>
+   </li>
+ </p>
+</div>
+
+
+<!-- <div id="step-our-contributions-3" class="step"  >
+</div>
+
+<div id="step-our-contributions-4" class="step"  style="height:1800px" >
+</div> -->
+
+<!--
+
+<div id="step-vavasis-ye-algorithm1" class="step" data-rotate-y="0">
+    <h3 class="">Another interpreation of affine scaling </h3>
+      <i>least squared problem formulation</i>
+      <br>
+    <div class="box" style="width: 50%">
+        <h5 class="center-text"> Affine scaling </h5>
+        <p>
+            $$$ \begin{aligned}
+              A \Delta x &= 0 \\
+              A^\top \Delta y + \Delta s &= 0 \\
+              S \Delta x + X \Delta s + Xs &= \mu e \\
+              \end{aligned}
+              $$$
+         </p>
+         <span class="em1"> On the central path the solution to the affine scaling problem coincides with the optimal solutions of the least squares problems. </span>
+         </div>
+    <div class="box" style="width: 50%">
+        <h5 class="center-text"> Least squares </h5>
+      <p>
+          $$$ \begin{aligned}
+            \min &\frac{\mu}{2}\|X^{-1}(x+\Delta x)\|^2 \\
+            \text{s.t. } & A\Delta x = 0
+            \end{aligned}
+            $$$
+            $$$ \begin{aligned}
+            \min &\frac{\mu}{2}\|S^{-1}(s+\Delta s)\|^2 \\
+            \text{s.t. } & A^\top \Delta y + \Delta s = 0
+            \end{aligned}
+            $$$
+        </p>
+        $$X = \text{diag}(x), S = \text{diag}(s)$$.
+        </div>
+</div>
+
+-->
+
+<!-- <div id="LLS-main" class="step"   data-scale="6" data-rel-x="1.0w" data-rel-y="3.5h" data-rel-to="step-limitation">
+    <h2 class="center-text">Layered Least Squares Interior Point Methods</h2>
+</div> -->
+
+
+<!-- <div id="step-newton-2" class="step" data-rel-x="0w" data-rel-y="0h" data-rel-z="0" data-rel-to="step-newton">
+</div>
+
+<div id="step-primal-dual-animation-2" class="step" data-rel-x="0w" data-rel-y="0h" data-rel-z="0" data-rel-to="step-primal-dual-animation">
+</div>
+
+
+<div id="step-rounding-2" class="step" data-rel-x="0w" data-rel-y="-0.4h" data-scale="1.5" data-rel-z="0" data-rel-to="step-rounding" >
+</div>
+
+<div id="step-vavasis-ye-motivate-0" class="step"  data-rel-x="-1.0w"  data-scale="1" data-rel-y="-1.3h" data-rel-to="LLS-main">
+</div> -->
+
+
+
+<div id="step-lls-cover" class="step">
+    <h1 class="center-text">Layered Least Squares Interior Point Methods</h1>
+
+  <div class="box" style="float: right">
+      <img src="data/lls.png" style="height: 30%;">
+  </div>
+    </div>
+
+
+
+<div id="step-vavasis-ye-motivate-1" class="step" >
+    <h2 class="center-text">The Vavasis&ndash;Ye algorithm</h2>
+    <h3 class="center-text">Learning the optimal partition of variables</h3>
+    <ul class="lst">
+      <li>
+        Assume the Predictor-Corrector method has already 'found' the partition <font class="fr">$$[n]=B^*\cup N^*$$</font>: $$x_i\gg x_j$$ and $$s_i\ll s_j$$  if $$i\in B^*$$, $$j\in N^*$$.
+      </li>
+<li>
+  A simple projection would find the optimal solution, but the usual predictor  step <span class="em2">does not</span>:
+ <font class="fr" style="font-size:smaller">
+         <!-- \min \left\|\textrm{diag}^{-1}(x) (x+\Delta x)\right\|^2 &= -->
+  $$$\min\, \sum_{i=1}^n\left(\frac{x_i+\Delta x_i}{x_i}\right)^2 \quad
+            \text{s.t. } A\Delta x = 0
+            $$$
+             </font>
+  </li>
+</div>
+
+<div id="step-vavasis-ye-motivate-2" class="step">
+
+    <h2 class="center-text">The Vavasis&ndash;Ye algorithm</h2>
+    <h3 class="center-text">Learning the optimal partition of variables</h3>
+
+    <ul class="lst">
+
+  <li><span class="em2">What does the Vavasis&ndash;Ye algorithm do here?</span>
+  </li>
+  <li> First, solve
+ <font class="fr" >
+         <!-- \min \left\|\textrm{diag}^{-1}(x) (x+\Delta x)\right\|^2 &= -->
+  $$$\min \sum_{\textcolor{red}{i\in N^*}}\left(\frac{x_i+\Delta \bar x_i}{x_i}\right)^2 \quad
+            \text{s.t. } A\Delta \bar x = 0
+            $$$
+             </font>
+             The $$N^*$$ components of the optimal $$\Delta\bar x$$ give $$\Delta x_{N^*}$$; in this case, $$\Delta x_{N^*}=0$$.
+           </li>
+<li>
+           Next, solve
+           <font class="fr" >
+         <!-- \min \left\|\textrm{diag}^{-1}(x) (x+\Delta x)\right\|^2 &= -->
+  $$$\min\, \sum_{\textcolor{red}{i\in B^*}}\left(\frac{x_i+\Delta \bar x_i}{x_i}\right)^2 \quad
+            \text{s.t. } A\Delta \bar x = 0,\, \Delta \bar x_{N^*}=\Delta x_{N^*}
+            $$$
+             </font>
+
+  </li>
+    </ul>
+</div>
+
+
+<div id="step-vavasis-ye-algorithm2" class="step">
+    <h2 class="center-text">The Vavasis&ndash;Ye algorithm</h2>
+    <!-- <h1 class="center-text">What happens?</h1> -->
+    <div style="width: 100%;">
+      <canvas id="chart_canvas3"></canvas>
+      <!-- <progress id="animationProgress2" max="1" value="0" style="width: 100%"></progress> -->
+    </div>
+    <br>
+    <br>
+</div>
+
+
+<div id="step-vavasis-ye-algorithm3" class="step">
+    <h2 class="center-text">Layering and crossover events
+    <br> in the Vavasis&ndash;Ye algorithm</h2>
+    <ul class="lst">
+      <li>
+Arrange the variables into layers <font class="fr">$$(J_1,J_2,\ldots,J_k)$$</font> as follows:
+</li>
+<li> Order  <font class="fr">$$x_1\ge x_2\ge\ldots\ge x_n$$</font>.
+</li>
+<li>
+Start a new layer after $$x_i$$ whenever <font class="fr">$$x_{i}> {\rm poly}(n) \bar \chi_A x_{i+1}$$</font>.
+  </li>
+<li>
+  Variables on lower layers 'barely influence' those on higher layers.
+</li>
+<li>
+  <span class="em2">Not scaling invariant!</span>
+  </li>
+</ul>
+</div>
+
+<div id="step-vavasis-ye-algorithm4" class="step">
+    <h2 class="center-text">Layering and crossover events
+    <br> in the Vavasis&ndash;Ye algorithm</h2>
+
+    <h3>Progress measure</h3>
+      <div class="definition">
+        The variables $$x_i$$ and $$x_j$$ <span class="em2">cross over</span>
+between $$\mu$$ and $$\mu'$$ for $$\mu \gt \mu' \gt 0$$, if
+        <ol class="romanlist">
+          <li>
+            <font class="fr">$${\rm poly}(n)(\bar \chi_A)^n x_j(\mu) \ge x_i(\mu)$$</font>.
+          </li>
+          <li>
+         <font class="fr"> $${\rm poly}(n)(\bar \chi_A)^n x_j(\mu'') \lt x_i(\mu'')$$
+          </font> on the central path for $$0 \lt \mu'' \lt \mu'$$.
+          </li>
+        </ol>
+      </div>
+
+       <div class="lemma"> In the Vavasis&ndash;Ye algorithm, a crossover event
+happens within every $$O(n^{1.5} \log \bar\chi_A)$$ iterations.
+      </div>
+      <span class="em2"><span class="em2">We do not know which two variables cross over!</span>  </span>
+</div>
+
+
+<div id="step-our-alg-1" class="step"  >
+    <h2 class="center-text">Scale-invariant layering algorithm [DHNV20]</h2>
+
+    <p>Instead of <font class="fr">$$x_i/x_j$$</font>, we look at the scale invariant <font class="fr">$$\kappa_{ij} x_i/x_j$$</font>.
+    <ul class="lst">
+      <li> Layers are identified as the strongly connected components of the digraph formed by the edges <font class="ref">$$(i,j)$$</font> such that
+        <font class="ref">$$\kappa_{ij}x_i/x_j\ge 1/\mathrm{poly}(n)$$</font>.
+      </li>
+      <li>
+				We do not know the  <font class="ref">$$\kappa_{ij}$$</font> values, but
+maintain gradually improving lower bounds on them.
+      </li>
+    </ul>
+
+    <center> <img src="./data/scc.png" height="300px"/> </center>
+
+</div>
+
+<div id="step-our-alg-2" class="step">
+    <h2 class="center-text">Scale-invariant layering algorithm [DHNV20]</h2>
+
+     <h3>Improved convergence analysis</h3>
+      <div class="definition">
+        The variables $$x_i$$ and $$x_j$$ <span class="em2">cross over</span>
+between $$\mu$$ and $$\mu'$$ for $$\mu \gt \mu' \gt 0$$, if
+        <ol class="romanlist">
+          <li>
+            <font class="fr">$${\rm poly}(n) (\bar \chi^*_A)^n x_j(\mu) \geq \kappa_{ij}
+x_i(\mu)$$</font>.
+          </li>
+          <li>
+         <font class="fr"> $${\rm poly}(n) (\bar \chi^*_A)^n x_j(\mu'') \lt  \kappa_{ij}
+x_i(\mu'')$$ </font> on the central path for $$0 \lt \mu'' \lt
+\mu'$$.
+          </li>
+        </ol>
+      </div>
+      <ul class="lst">
+        <li> We do not use cross-over events directly, but a more fine-grained
+potential.
+        </li>
+        <li> This improves the overall number of iterations from </br>
+$$O(n^{3.5}\log(\bar\chi_A+n))$$ to
+          <font class="fr">$$O(n^{2.5}\log(\bar\chi_A^*+n)\log n)$$</font>
+        </li>
+ <li>
+  Our improved analysis is also applicable to the original Vavasis&ndash;Ye algorithm.
+      </li>
+    </ul>
+</div>
+
+ <div id="step-conclusions" class="step" >
+      <h2 class="center-text">Follow up work</h2>
+       <ul class="lst">
+        <li style="margin-bottom: 10px"> Black box LP solver achieving $$\bar\chi_A$$ dependence using approximate LP solvers:
+          <font class="ref">Dadush, Natura, V. '20</font>. Using  <font class="ref">van den Brand '20</font>: deterministic
+         <font class="ref"> $$O(mn^{\omega+1}\log(n)\log(\bar\chi_A+n))$$</font> LP algorithm.
+        </li>
+      </ul>
+       <h2 class="center-text">Open questions</h2>
+       <ul class="lst">
+        <li style="margin-bottom: 10px"><span class="em2">Practical potential?</span> preprocessing LPs via column rescaling may be a good idea.
+        </li>
+        <li style="margin-bottom: 10px">Improve the running time, both the iteration count and by using faster linear algebra.
+        </li>
+        <li style="margin-bottom: 10px">Understand and further explore the combinatorics of $$\bar\chi_A$$ and $$\kappa_A$$.
+        </li>
+        <li style="margin-bottom: 10px">Strongly polynomial LP: need to 'leave' the central path or use path
+induced by different barrier.
+        </li>
+        <li style="margin-bottom: 10px"> Can we unify strongly polynomial analyses for special LP classes
+using tools from LLS analysis? </li>
+      <!--  <li style="margin-bottom: 10px"> Show that LPs with $$2$$ variables per inequality can be solved in
+strongly polynomial time. </li>-->
+				<li> Can we get combinatorial bounds on the number of
+iterations of the LLS steps? </br>
+             Does $$2^n$$ iterations suffice to solve an $$n$$-variable LP?</li>
+       </ul>
+</div>
+
+</div>
+
+<!--
+<div id="step-circuit-finding" class="step">
+    <h2 class="center-text"> Finding circuits </h2>
+  </div>
+
+  <div id="step-chi-bar-star-meaning" class="step">
+      <h2 class="center-text"> What does $$\bar\chi_A^*$$ depence mean.</h2>
+      Examples.
+    </div>
+-->
+<!-- <div id="step-ty" class="step purple"
+  data-x="3500" data-y="6500" data-z="1500" data-rotate-x="0" data-rotate-y="-70"
+  data-rotate-z="80" dat-scale="2">
+  <canvas class="center-block" width="900" height="800"></canvas>
+</div>
+
+<div id="overview" class="step" data-x="6000" data-y="5500" data-z="0" data-scale="4" data-rotate-y="-60">
+    </div>
+
+
+  </div> -->
+
+<!-- <div id="impress-toolbar"></div> -->
+
+<script>
+    document.addEventListener('keypress', function(e){
+      console.log(e.which);
+              if(e.which === 115 ){ //s
+                window.location.href = "index.html#/step-primal-dual-animation";
+              } else if(e.which === 111){ //o
+                window.location.href = "index.html#/step-overview-3";
+              }})
+  </script>
+
+<script src="chart1.js"></script>
+<script src="chart2.js"></script>
+
+
+<div class="impress-progressbar"><div></div></div>
+<div class="impress-progress"></div>
+
+<!-- <div id="impress-help"></div> -->
+
+<!-- <script src="lib/js/impress.js"></script> -->
+<script type="text/javascript" src="impress.js/js/impress.js"></script>
+<script>impress().init();</script>
+</body>
+</html>

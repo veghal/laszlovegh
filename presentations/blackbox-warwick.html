@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Linear Programming Slides</title>
+  <script src="lib/js/jquery-1.11.2.min.js"></script>
+  <script src="lib/js/jcanvas.min.js"></script>
+  <script src="lib/js/queue.min.js"></script>
+  <script src="js/geometry.js"></script>
+  <script src="js/graph.js"></script>
+  <script src="js/triangulate.js"></script>
+  <script src="js/sim.js"></script>
+  <script src="js/index.js"></script>
+  <script src="data/banana.js"></script>
+  <script src="data/key.js"></script>
+  <script src="data/ty.js"></script>
+  <script src="data/sheet.js"></script>
+  <script src="data/guitar.js"></script>
+  <script src="js/steps.js"></script>
+  <script src="Chart.min.js"></script>
+  <script src="Chart.js/samples/utils.js"></script>
+
+<link rel="stylesheet" href="KaTeX/dist/katex.min.css">
+<script defer src="KaTeX/dist/katex.min.js"></script>
+<script defer src="KaTeX/dist/contrib/auto-render.min.js"
+   ></script>
+   <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log("Run Katex rendering")
+        renderMathInElement(document.body, {
+              delimiters: [
+                  {left: "$$$", right: "$$$", display: true},
+                  {left: "$$", right: "$$", display: false},
+              ]
+        });
+    });
+</script>
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.2.0/fabric.min.js'></script>
+
+
+
+  <!-- <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS" : {
+        availableFonts : ["STIX"],
+        preferredFont : "STIX",
+        webFont : "STIX-Web",
+        imageFont : null
+    },
+  tex2jax: {
+    inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+  },
+  TeX: {
+    Macros: {
+      energy: "e",
+      eqby: ["\\stackrel{#1}{=}",1],
+    }
+  }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+ -->
+
+  <link rel="stylesheet" type="text/css" href="css/index.css" />
+  <link rel="stylesheet" type="text/css" href="css/steps.css" />
+  <link rel="stylesheet" type="text/css" href="css/aussois-styles.css" />
+  <link rel="stylesheet" type="text/css" href="css/joris_styles.css" />
+<!-- <script src="/Users/natura/Downloads/less.js/dist/less.js" ></script> -->
+
+</head>
+<body>
+
+<div id="impress" data-perspective="0" data-min-scale="1" data-max-scale="1" data- data-transition-duration="0">
+
+  <div id="step-title" class="step title-joris" data-x="4000" data-y="5000" data-z="0" data-scale="1">
+    <div class="talk_title_container">
+        <div class="talk_title">
+          <div style="font-size:130%;margin-bottom:0.2em;margin-top:.5em">Revisiting Tardos's Framework for Linear Programming</div>
+        </div>
+        <div class="talk_subtitle">
+          <div style="font-size:130%;margin-bottom:0.2em;">Faster Exact Solutions using Approximate Solvers</div>
+        </div>
+      </div>
+      <div class="talk_author_container" style="margin-bottom: 0.1em;">
+         <div class="talk_author_name"> L&aacute;szl&oacute; V&eacute;gh  <span class="superscript">&nbsp;</span></div>
+        <div class="talk_author_affiliation"> London School of Economics and Political Science </div>
+      </div>
+        <div class="talk_author_container">
+           <div class="talk_author_affiliation" style="margin-bottom: 0.3em;">
+          joint work with</div>
+        <div class="talk_author_name" style="margin-bottom: 0.3em;">
+          Daniel Dadush (CWI Amsterdam)
+          <br> and <br> Bento Natura (LSE)<span class="superscript">&nbsp;</span> </div>
+      <img src="./data/cwi-logo.png" style="height: 120px; margin: 0px 5px
+0px 20px;"/>
+
+       <img src="./data/dan.jpg" style="height: 150px; margin: 0px 20px 0px 20px;"/>
+
+       <!-- <img src="./data/dan.jpg" style="float:right; visibility:
+hidden; height: 150px; margin: 0px 20px 0px 20px;"/> -->
+        <img src="./data/Bento.jpg" style="height: 150px; margin: 0px 20px 0px 20px;"/>
+  <!--     <img src="./data/vegh.jpg" style="height: 150px; margin: 0px 20px 0px 20px;"/>-->
+      <img src="./data/lse-logo.png" style="height: 120px; margin: 0px 20px 0px 20px;"/>
+        <img src="./data/erclogo.png" style="height: 120px; margin: 0px 20px 0px 20px;"/>
+      </div>
+    <div class="talk_occasion">DIMAP Seminar@ University of Warwick, 20 Sep 2020</div>
+    <div class="text_centered" style="margin-top: 1em;">
+      <!-- <img src="../../presentations_shared/images/logo_huygens_ing_0.30.gif" style="height: 85px; margin: 0px 20px 0px 20px;"/> -->
+
+    </div>
+  </div>
+
+
+<!-- <div id="step-title" class="step"
+  data-x="5000" data-y="5000" data-z="0">
+  <div  style="position: relative;
+  top: 50%;
+  transform: translateY(-60%);">
+  <h1 class="title">A scaling invariant algorithm for Linear Programming</h1>
+
+  <p>Bento Natura</p>
+  <p>
+    Department of Mathematics<br>
+    London School of Economics
+  </p>
+  </div>
+</div> -->
+
+<div id="step-LP-formulation" class="step" data-rel-x="3000" data-rel-y="0" data-rel-z="0" data-scale="1" >
+  <h2 class="center-text">Linear Programming</h2>
+
+    <p>
+    In standard form for $$A \in \mathbb{Q}^{m \times n}$$, $$b\in \mathbb{Q}^m$$, $$c\in \mathbb{Q}^n$$,
+<font class="fr">
+    $$$
+      \begin{aligned}
+      \min \; &\langle c, x \rangle  & \max \; & \langle y,b \rangle \\
+      Ax& =b & \qquad A^\top y + s &= c \\
+      x &\geq 0 & s & \geq 0 \\
+      \end{aligned}
+      $$$
+    </font>
+  </p>
+  <center>
+  <img src="./data/lp-pic.png" style="position: relative; top: 20px;" height="200px"/>
+  </center>
+
+  <!-- <canvas class="center-block" width="800px" height="400px"></canvas> -->
+</div>
+
+<!-- <div id="step-LP-motivation" class="step">
+  <h2> Motivation - Background</h2>
+  pretty obvious. Might leave empty.
+</div> -->
+
+
+<div id="step-timeline" class="step timeline-slide">
+  <h2 class="center-text"> Timeline </h2>
+  <!-- <div style="float:right; padding-top: 50px; padding-right: 50px"> </div> -->
+  <div id="timeline-content" style="margin-left: 150px; font-size: 20px;">
+      <ul class="timeline" style="width: 70%">
+          <li class="event" data-date="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?">
+              <img src="./data/holygrail.png" style="height: 150px; float: right"/>
+              <h3> Strongly polynomial algorithm for LP </h3>
+              <font class="ref"> Smale's 9th question </font>
+            </li>
+          <li class="event" data-date="1980s">
+             <h3>Interior point methods</h3>
+             <font class="ref"> Karmarkar </font>
+            </li>
+        <li class="event" data-date="1970s">
+          <h3> Ellipsoid Method </h3>
+          <font class="ref">Khachiyan</font>
+        </li>
+        <li class="event" data-date="1940s">
+          <h3>Simplex Method </h3>
+          <font class="ref">Dantzig</font>
+        </li>
+        <li class="event" data-date="1820s">
+          <h3>Origins</h3>
+          <font class="ref">Fourier</h3>
+      </ul>
+    </div>
+</div>
+
+<div id="step-weakly-vs-strongly-polynomial" class="step">
+    <h2 class="center-text">Weakly vs Strongly Polynomial Algorithms for LP</h2>
+LP with <font class="fr"> $$n$$</font> variables, <font class="fr">$$m$$ </font>constraints
+<br>
+ <font class="fr">$$L$$</font>: encoding length of the input.
+<p >
+    <div class="box" style="width: 45%;">
+    <fieldset style="border: 1px black solid; height: 50%; width: 90%; margin:0; float:left">
+
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em; margin: 0 ">weakly polynomial</legend>
+        <ul style="list-style-type:disk;">
+          <li>
+             <font class="fr"> $$\mathrm{poly}(m,n,L)$$ </font> basic arithmetic operations.
+          </li>
+          <li>
+          	Standard variants of Ellipsoid and interior point methods: running time bound heavily
+relies on <font class="fr">$$L$$</font>.
+          </li>
+        </ul>
+        </fieldset>
+</div>
+ <div class="box" style="width: 50%;">
+        <fieldset style="border: 1px black solid; height: 50%; width: 90%; margin:0; float:left">
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">strongly polynomial</legend>
+        <ul style="list-style-type:disk;">
+          <li>
+            <font class="fr">$$\mathrm{poly}(m,n)$$</font> basic arithmetic operations.
+           </li>
+           <li>
+            <font class="fr"> PSPACE</font>: all numbers occurring in the algorithm must remain polynomially bounded in input size.
+           </li>
+        </ul>
+        </fieldset>
+    </div>
+     
+</div>
+
+
+<div id="step-fast-weakly-polynomial" class="step">
+    <h2 class="center-text">Fast Weakly Polynomial Algorithms for LP</h2>
+<!--<font class="fr">$$\min c^\top x$$ $$Ax=b$$, $$x\ge 0$$</font> with <font class="fr"> $$n$$</font> variables, <font class="fr">$$m$$ </font>constraints
+<br>-->
+ <fieldset style="border: 1px black solid">
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">$$\varepsilon$$-approximate solution</legend>
+        <ul class="lst">
+          <li> Approximately optimal: <font class="fr">$$\langle c, x \rangle\le\mathrm{OPT}+\varepsilon \|c\| R$$</font>
+          	<li> Approximately feasible: <font class="fr"> $$\|Ax-b\|\le\varepsilon (\|A\|_F R+\|b\|)$$</font>
+          	<li style="margin-bottom:-20px"> <font class="fr">$$\log(1/\varepsilon)$$</font> dependence $$\Rightarrow$$ exact algorithm with <font class="fr">$$L$$</font> dependence.
+</ul>
+</fieldset>
+<br>
+ <fieldset style="border: 1px black solid">
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Recent progress</legend>
+        <ul class="lst">
+          <li> Randomized $$O\big((\textrm{nnz}(A) + m^2)\sqrt{m}\log^{O(1)} (n) \log (n/{\varepsilon}))$$ <font class="ref">Lee&ndash;Sidford '13&ndash;'19</font>
+          	<li> Randomized $$O(n^\omega \log^{O(1)}(n) \log (n/{\varepsilon}))$$ 
+	<font class="ref">Cohen, Lee, Sidford '19</font>
+<li> Deterministic $$O(n^\omega \log^2(n) \log (n/{\varepsilon}))$$
+	<font class="ref">van den Brand '20</font>
+	<li style="margin-bottom:-20px"> Randomized $$O((mn + m^3) \log^{O(1)}(n) \log (n/{\varepsilon}))$$ 
+		<font class="ref">van den Brand, Lee, Sidford, Song '20</font>
+</ul>
+</fieldset>
+</div>
+
+<div id="step-fast-weakly-polynomial-techniques" class="step">
+    <h2 class="center-text">Fast Weakly Polynomial Algorithms for LP</h2>
+<!--<font class="fr">$$\min c^\top x$$ $$Ax=b$$, $$x\ge 0$$</font> with <font class="fr"> $$n$$</font> variables, <font class="fr">$$m$$ </font>constraints
+<br>-->
+ <fieldset style="border: 1px black solid">
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Techniques</legend>
+        New variants of Interior Point Methods, using
+        <ul class="lst">
+          <li> weighted and stochastic central paths
+          	<li> fast approximate linear algebra
+          <li> efficient data structures
+</fieldset>
+</div>
+
+<div id="step-strongly-polynomial-algorithms-for-LP" class="step">
+    <h2 class="center-text">Strongly Polynomial Algorithms for LP</h2>
+    <fieldset style="border: 1px black solid">
+
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Network flow problems</legend>
+        <ul class="lst">
+          <li>
+Maximum flow: <font class="ref">Edmonds&ndash;Karp&ndash;Dinitz '70-72</font>
+<li>
+Min-cost flow: <font class="ref">Tardos '85</font>
+</li>
+</ul>
+<!--
+          <li>
+            If $$A$$ integral and $$|\mathrm{det}(B)| \leq \Delta$$ for square submatrices, then LP solvable in time $$\mathrm{poly}(m,n,\Delta)$$[T86].
+          </li>
+          <li>
+            LP solvable in $$O(n^{3.5}\log\bar\chi_A)$$ linear system solves, where $$\bar\chi_A = O(2^{L_A})$$ [VY96].
+          </li>
+        </ul>-->
+        </fieldset>
+        <br>
+        <fieldset style="border: 1px black solid">
+
+            <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Special classes of LP</legend>
+            <ul class="lst">
+              <li>
+               Feasibility of 2-variable-per-inequality systems: <font class="ref">Megiddo '83</font>
+              </li>
+               <li>
+                Discounted Markov Decision Processes: <font class="ref"> Ye '05, Ye '11 </font>
+              </li>
+              <li>
+               Maximum generalized flow problem: <font class="ref"> V. '17, Olver&ndash; V. '20</font>
+              </li>
+              <li>
+                ...
+              </li>
+            </ul>
+            </fieldset>
+</div>
+
+<!--
+<div id="step-strongly-polynomial-general-0" class="step" data-rel-x="0" data-rel-y="1.0h" data-rel-to="step-strongly-polynomial-algorithms-for-LP">
+</div>
+-->
+
+<div id="step-strongly-polynomial-general-1" class="step">
+      <h2 class="center-text">Dependence on the constraint matrix only</h2>
+      <p>
+       <font class="fr"> $$$\min \langle c, x \rangle\, Ax=b,\, x\ge 0$$$</font>
+       Running time dependent <span class="em2">only</span> on constraint matrix $$A$$, but <span class="em2">not</span> on $$b$$ and $$c$$.
+      </p>
+      <fieldset style="border: 1px black solid;">
+
+          <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">General LP</legend>
+          <ul class="lst">
+            <li>
+              <font class="ref">'Combinatorial LPs'</font>
+              <br>
+              If <font class="fr">$$A$$</font> integral and <font class="fr">$$|\mathrm{det}(B)| \leq \Delta$$</font> for all square submatrices of <font class="fr">$$A$$</font>, then LP solvable in <font class="fr">$$\mathrm{poly}(m,n,\log\Delta)$$</font> arithmetic operations: <font class="ref">Tardos '86</font>
+            </li>
+            <li>
+              <font class="ref">'Layered-least-squares (LLS) Interior Point Method'</font><br>
+              LP solvable in <font class="fr">$$O(n^{3.5}\log\bar\chi_A)$$ </font> linear system solves:
+              <font class="ref">Vavasis&ndash;Ye '96</font>
+              <!-- <span class="em2">, but algorithm is not scaling invariant!</span>-->
+            </li>
+            <li>
+              <font class="ref">'Scaling invariant Layered-least-squares (LLS) Interior Point Method'</font><br>
+              LP solvable in <font class="fr">$$O(n^{2.5}\log n \log\bar\chi_A^*)$$ </font> linear system solves:
+              <font class="ref">Dadush&ndash;Huiberts&ndash;Natura&ndash;V. '20</font>
+              <!-- <span class="em2">, but algorithm is not scaling invariant!</span>-->
+            </li>
+          </ul>
+          </fieldset>
+</div>
+
+<div id="step-strongly-polynomial-general-2" class="step">
+      <h2 class="center-text">Dependence on the constraint matrix only</h2>
+      <p>
+       <font class="fr"> $$$\min \langle c, x \rangle\, Ax=b,\, x\ge 0$$$</font>
+       Running time dependent <span class="em2"> only </span> on constraint matrix $$A$$, but <span class="em2"> not </span> on $$b$$ and $$c$$.
+      </p>   
+      <p>
+              <font class="ref">'Layered-least-squares (LLS) Interior Point Method'</font><br>
+              LP solvable in <font class="fr">$$O(n^{3.5}\log\bar\chi_A)$$ </font> linear system solves:
+              <font class="ref">Vavasis&ndash;Ye '96</font></p>
+<p>
+        <fieldset style="border: 1px black solid">
+              <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Condition number <font class="fr"> $$\bar\chi_A$$</font></legend>
+              <ul class="lst">
+                <li>
+            $$\bar\chi_A = O(2^{L_A})$$. 
+          </li>
+          <li>
+            Governs the stability of layered-least-squares solutions.
+          </li>
+          <li>
+                Depends  <span class="em2"> only </span>  on the subspace $$\ker(A)$$. 
+                </li>
+                <li>
+                  NP-hard to approximate within a factor <font class="fr">$$2^{\mathrm{poly}(\mathrm{rank}(A))}$$</font>: <font class="ref">Tun&ccedil;el '99</font>
+                </li>
+                <!--
+                <li>Let $$\bar\chi_A^* := \inf\{\bar\chi_{AD}: D \text{ diagonal, positive definite}\}$$</li> be the optimal rescaling.
+              -->
+              </ul>
+              </fieldset>
+            </p>
+</div>
+
+
+<div id="step-fast-cover" class="step">
+  <h1 class="center-text">Can an exact LP algorithm also be fast?</h1>
+  <br>
+
+  <fieldset style="border: 1px black solid">
+              <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Layered Least Squares IPMs</legend>
+              <ul class="lst">
+                <li> Require computationally expensive special step directions
+                <li> Extending them to weighted central paths seems difficult
+              </ul>
+              </fieldset>
+
+</div>
+
+
+
+<div id="step-black-box-cover" class="step">
+  <h1 class="center-text">Black box approach</h1>
+  <br>
+  <div class="box" style="width: 45%; padding-top: 0px">
+  <img src="./data/blackbox.png" style="height: 250px; margin: 0px 20px 0px 20px;"/>
+  
+  </div>
+   <div class="box" style="width: 55%">
+    <ul class="lst">
+      <li style="margin-bottom:10px">
+     Use fast approximate solver in black box manner
+           <li style="margin-bottom:10px">
+      Learn information about the support of the optimal solution
+      <li style="margin-bottom:10px">
+      	Relies on proximity results on LP solutions
+</ul>
+  </div>
+  
+</div>
+
+
+
+<div id="step-tardos-framework" class="step">
+  <h2 class="center-text"> Tardos's framework: variable fixing</h2>
+  <h3 class="center-text"> </h3>
+  <p>
+    <font class="fr"> $$$\min \langle c, x \rangle\, Ax=b,\, x\ge 0, A \in \Z^{m \times n}$$$</font>
+    Running time dependent <span class="em2">only</span> on constraint matrix $$A$$, but <span class="em2"> not </span> on $$b$$ and $$c$$.
+    <br>
+    Key idea for the first strongly polynomial algorithm for <font class="ref">minimum cost flows</font>.
+   </p>
+  <fieldset style="border: 1px black solid">
+
+    <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em">Proximity</legend>
+     Use <font class="em2">exact</font> solvers to find optimal solution <font class="fr">$$x$$</font> to <font class="fr">$$\varepsilon$$</font>-rounded (perturbed) problems. Proximity yields that an optimal solution <font class="fr">$$x^*$$</font> to the original problem is within <font class="fr">$$\mathrm{poly}(n)\Delta \cdot \varepsilon$$</font> of the rounded problem.   
+      </fieldset>
+      
+      <fieldset style="border: 1px black solid; position: relative; top: 7px">
+          <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Variable Fixing</legend>
+         If the proximity is better than <font class="fr">$$\|x\|_\infty$$</font>, then we learn <font class="fr">$$x^*_i > 0$$</font> for a variable and so the corresponding slack variable is <font class="fr">$$s^*_i = 0$$</font>.
+         <br>
+         $$\leadsto$$ <font class="em2">delete</font> variable and <font class="em2">recurse</font> on smaller problem.
+        </fieldset>
+</div>
+
+
+<div id="step-our-contributions" class="step">
+    <h2 class="center-text"> Our contributions:
+Dadush&ndash;Natura&ndash;V. '20</h2>
+    <h3 class="center-text"> </h3>
+    <fieldset style="border: 1px black solid">
+
+      <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em">Generalizing Tardos' result to real matrices</legend>
+        We give a blackbox algorithm that can handle any  <font class="em2">real</font> matrix <font class="fr">$$A\in \R^{m \times n}$$</font> and dependence  <font class="fr">$$\log\bar\chi_A$$</font> instead of <font class="fr">$$\log \Delta_A$$</font>.  
+        </fieldset>
+      <p style="font-size:11px"></p>
+        <fieldset style="border: 1px black solid; position: relative; top: 7px">
+            <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Usage of approximate solvers</legend>
+          We only require any <font class="em2">approximate</font> LP solver, and can directly leverage the fast approximate LP algorithms. 
+          <font class="fr">$$O(mn^{\omega+1+o(1)}\log\bar\chi_A)$$</font> exact deterministic LP algorithm using <font class="ref">van den Brand '20</font>.
+          </fieldset>
+           <p style="font-size:11px"></p>
+        <fieldset style="border: 1px black solid; position: relative; top: 14px">
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em "> Certificates for infeasibility and large condition numbers</legend>
+        If primal or dual linear programming are infeasible we provide a Farkas certificate. In case that the condition number is larger than our <font class="fr">guess</font>, we are able to provide a <font class="fr">certificate</font>.
+        </fieldset>
+            <br>
+            <font class="fr">$$\bar\chi$$</font> is hard to estimate. Iterative guesses $$M\to \max\{M^2,\textrm{certified lower bound at failure}\}$$.
+</div>
+
+
+<div id="step-compare-tardos" class="step">
+    <h2 class="center-text"> Comparison to Tardos's algorithm</h2>
+     <font class="fr"> $$$\min \langle c, x \rangle\, Ax=b,\, x\ge 0, A \in \Z^{m \times n}$$$</font>
+  
+    <h3 class="center-text"> </h3>
+    <fieldset style="border: 1px black solid">
+    	<legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em">Tardos '86</legend>
+    	 <ul class="lst">
+      <li>
+    	Solves LP via <font class="fr">$$O(mn)$$</font> calls to an exact solver for 
+    	<font class="fr">$$\min  \langle \tilde c, x \rangle\, Ax=\tilde b,\, x\ge 0, A \in \Z^{m \times n}$$</font>.
+  <li> <font class="fr">$$\tilde b,\tilde c$$</font> integer vectors with entries <font class="fr">$$O(n^2\Delta)$$</font>
+    <li > Key property: in a basic solution <font class="fr">$$x$$</font>, we have <font class="fr">$$x_i=0$$</font> or <font class="fr">$$x_i> 1/(n^{O(1)}\Delta_A)$$</font> for every <font class="fr">$$i\in [n]$$</font>. 
+    	   <li style="margin-bottom:-15pt"> <font class="em2">Inherently relies on integrality arguments</font>
+    	</ul> 
+        </fieldset>
+<br>
+   <fieldset style="border: 1px black solid">
+    	<legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em">DNV '20</legend>
+    	 <ul class="lst">
+      <li> <font class="fr"> $$O(mn)$$ </font> calls to approximate LP 
+      	<li style="margin-bottom:-15pt"> <font class="fr">$$\log\bar\chi_A$$</font> <span class="em2">dependence with no integrality required.</span>
+    	</ul>
+        </fieldset>
+
+</div>
+
+<div id="step-compare-tardos-2" class="step">
+    <h2 class="center-text"> Comparison to Tardos's algorithm</h2>
+     <font class="fr"> $$$\min \langle c, x \rangle\, Ax=b,\, x\ge 0, A \in \Z^{m \times n}$$$</font>
+  
+    <h3 class="center-text"> </h3>
+
+    For the case when <font class="fr"> $$A$$ </font> is integral and <font class="fr">$$\log\Delta_A=O(\log \bar\chi_A)$$</font>:
+     <ul class="lst">
+      <li> The asymptotic running time of the two algorithms are similar.
+      <li> The fast approximate solvers can also be used in Tardos's framework.
+      <li> However, converting approximate to exact solutions requires expensive computations that have to be done for each oracle call.
+      <li > <font class="fr">DNV'20</font> can work with approximate solutions directly.
+    	</ul> 
+</div>
+
+<div id="step-bar-chi-cover" class="step">
+  <h1 class="center-text">The mysterious $$\bar\chi_A$$</h1>
+
+  <h2 class="center-text">through a matroidal lens</h3>
+</div>
+
+
+
+<div id="step-chi-bar-definition" class ="step">
+<h2 class="center-text">The condition number $$\bar\chi_A$$</h2>
+<div class=definition>
+<font class="fr">
+$$$
+\bar\chi_A:=\sup\left\{\|A^\top \left(A D A^\top\right)^{-1}AD\|\, : D\in
+  {\mathbf D}\right\}
+$$$
+</font>
+<ul class="lst">
+	<li>
+Introduced by <font class="ref">Dikin '67, Stewart '89, Todd '90, ...</font>
+<li> Bounds norm of oblique projections.
+<li> Depends only on the subspace <font class="fr">$$\ker(A)$$</font>.
+<li> Plays key role in certain interior point methods.
+</ul>
+
+</div>
+<!--
+<h3>A convenient characterization: lifting cost</h3>
+</b> $$\bar\chi_A$$ is the
+minimum number $$M \geq 1$$
+such that for all $$I \subseteq [n]$$ and $$x \in \mathrm{proj}_I(\ker(A))$$,
+there exists $$\hat{x} \in \ker(A)$$ satisfying $$\hat{x}_I = x$$ and
+$$\|\hat{x}\| \leq M \|x\|$$. </br></br>
+
+<b> Ex: </b> If $$(1,2,*,*) \in \ker(A)$$, $$\exists (1,2,x,y) \in \ker(A)$$
+with $$\|(1,2,x,y)\| \leq M\|(1,2)\|$$.</br>
+-->
+</div>
+
+
+<!--
+<div id="step-chi-bar-properties" class="step" >
+  <h2 class="center-text">Properties of $$\bar\chi_A$$</h2>
+  <p>
+  $$$
+  \bar\chi_A=\sup\left\{\|A^\top \left(A D A^\top\right)^{-1}AD\|\, : D\in
+  {\mathbf D}\right\}
+  $$$
+  We also use $$\bar \chi_W=\bar\chi_A$$ for the subspace $$W=\ker(A)$$.
+  </p>
+  <span class="lemma"> The following hold:
+  <ol class="romanlist">
+  <li style="margin-top: 10px"><span style="padding-left: 50px">If $$A \in \Z^{n \times m}$$ then $$\bar\chi_A$$ is bounded by $$2^{O(L_A)}$$,
+      where $$L_A$$ is the input bit length of $$A$$.</span>
+     </li>
+<li style="margin-top: 10px"><span style="padding-left: 50px">$$\bar\chi_A = \max\left\{ \|B^{-1} A\| : B
+\text{ non-singular } m \times m \text{ submatrix of } A\right\}.$$</span>
+  </li>
+  <li style="margin-top: 10px"><span style="padding-left: 50px"> $$\bar\chi_W=\bar\chi_{W^\perp}.$$ </span>
+  </li>
+</ol>
+</span>
+</div>
+-->
+
+<div id="step-circuit-imbalance" class="step">
+  <h2 class="center-text">The circuit imbalance measure</h2>
+  <h4 class="center-text">...the "combinatorial" sister of $$\bar\chi_A$$</h4>
+  <div class=definition>
+  A <span class="em2">circuit</span> of <font class="fr">$$A$$</font> is a minimal linearly dependent subset of columns <font class="fr"> $$C \subseteq [n]$$ </font>. Let <font class="fr"> $$\mathcal{C}$$</font> denote the set of all circuits.
+  </div>
+  <div class=definition>
+  	 The <span class="em2">circuit imbalance measure</span> of $$A$$ is
+    <font class="fr"> $$$\kappa_A:= \max\left\{\left|\frac{g_j}{g_i} \right|: Ag=0,\, \mathrm{supp}(g) \in \mathcal{C},  i,j\in  \mathrm{supp}(g),\,\right\}$$$</font>
+   </div>
+<div class=lemma> If $$A$$ is a TU-matrix, then $$\kappa_A=1$$. More generally, if $$A$$ is integer, then $$\kappa_A\le \Delta_A$$.
+</div>
+<b>Proof.</b> For a TU-matrix, $$Ax=0$$, $$-1\le x\le 1$$, $$x_J=0$$ is an integer polytope for all $$J\subseteq n$$. The second part follows by Cramer's rule.
+
+   <div class=theorem> <font class="ref"> [DHNV20]</font>
+    <font class="fr" style="padding-left: 50px">
+      $$\sqrt{1+\kappa_A^2}\le \bar\chi_A \le n\kappa_A.$$ 
+    </font> Thus, $$\log (n+\kappa_A)=\Theta (\log(n+\bar\chi_A))$$.
+   </div>
+
+</div>
+
+<div id="step-kappa-vs-delta" class="step">
+  <h2 class="center-text">$$\Delta$$  vs  $$\kappa$$</h1>
+
+  <div class="box" style="width: 55%">
+    <ul class="lst">
+      <li style="margin-bottom:10px">
+       In general 
+   <font class="fr">$$\kappa \le n\Delta$$.</font>
+  </li>
+  <li> For complete undirected graph: $$$\kappa = 2,\text{ but } \Delta \ge 2^{\lfloor n/3 \rfloor}$$$ </li> 
+    </ul>
+    as 
+   $$$\det
+     \begin{pmatrix}
+     1 & 0 & 1 \\
+     1 & 1 & 0 \\
+     0 & 1 & 1 \\
+     \end{pmatrix} = 2$$$
+  </div>
+  <div class="box" style="width: 45%; padding-top: 0px">
+      <img src="data/colored_graph.png" style="width: 100%;">
+  </div>
+
+</div>
+
+<div id="step-rescaling" class="step">
+  <h2 class="center-text">Near-optimal rescaling</h1>
+     <ul class="lst">
+     	<li>  <font class="fr">$$A\in \R^{m\times n}$$.</font> Let <font class="fr">$$\mathbf{D}$$</font> denote the set of $$n\times n$$ positive diagonal matrices.
+       <li> <span class="em2">Diagonal rescaling (LP') of (LP):</span>
+Replace $$A'=AD$$, $$c'=Dc$$, $$b'=b$$ for some $$D\in \mathbf{D}$$.
+<li> Natural invariance of the central path and standard IPMs.
+<li> Optimized versions of the condition numbers:<br>
+    <font class="fr">
+    $$\bar\chi_A^* := \inf\{\bar\chi_{AD}: D\in \mathbf{D}\}\ ,\quad \kappa_A^* := \inf\{\kappa_{AD}: D\in \mathbf{D}\}.$$</font>
+</ul>
+        <fieldset style="border: 1px black solid; position: relative;">
+ <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Finding a nearly-optimal rescaling of $$A$$ <font class="ref">DHNV '20</font></legend>
+Given <font class="fr">$$A \in \R^{m \times n}$$</font>, in <font
+class="fr">$$O(n^2m^2 + n^3)$$</font> time, we can compute
+        <ol class="lst" style="position:relative; top:-20px; margin-bottom:-15px">
+        <li> rescaling <font class="fr">$$D \in \mathbf{D}$$</font> satisfying
+         <font class="fr">
+$$ \bar\chi_A^*\le \bar\chi_{AD}\le n (\bar\chi_A^*)^3$$</font>.
+</li>
+<li> <font class="fr">$$t \geq 1$$</font> satisfying
+<font class="fr">$$t \leq \chi_A \leq n(\bar{\chi}_A^*)^2t$$</font>.
+       </ol>
+        </fieldset>
+<ul class="lst" >
+	<li>
+		In all algorithms we can replace $$\log(n+\bar\chi_A)$$ dependence by $$\log(n+\bar\chi_A^*)$$ dependence.
+	<li>
+Recall that it is 
+     NP-hard to approximate $$\bar\chi_A$$ within a factor <font class="fr">$$2^{\mathrm{poly}(\mathrm{rank}(A))}$$</font>: <font class="ref">Tun&ccedil;el '99</font>
+    </ul>
+
+
+
+ 
+
+</div>
+
+
+ 
+
+<div id="step-proximity-cover" class="step">
+  <h1 class="center-text">Proximity theorems for $$\kappa_A$$</h1>
+  <div class="box" style="width: 35%; float:right">
+      <img src="data/d-x-dec.png" style="width: 100%;">
+  </div>
+
+</div>
+
+<!--
+<div id="step-interior-point-method-success" class="step">
+  <h2 class="center-text">Recent weakly polynomial IPM successess</h2>
+       <font class="fr"> $$$\min c^\top x,\, Ax=b,\, x\ge 0, A \in \mathbb{Q}^{m \times n}$$$</font>
+       <br>
+       <fieldset style="border: 1px black solid; position: relative; top: 14px">
+  <ul class="lst">
+    <li>Randomized <font class="fr">$$\tilde{O}(\sqrt{m}(\mathrm{nnz}(A) + m^2)L)$$</font> algorithm,  where <font class="fr">$$\mathrm{nnz}$$</font> is the number of non-zeros: <font class="ref">Lee&ndash;Sidford '14-15, '19</font>
+    </li>
+    <li>Randomized algorithm in 'current' matrix multiplication time <font class="fr">$$\tilde{O}(n^\omega L)$$</font>, <br> $$\omega \approx 2.37$$: <font class="ref">Cohen&ndash;Lee&ndash;Song '18</font>; improving the conditional 'current': <font class="ref"> Jiang, Song, Weinstein, Zhang '20</font>  </li>
+    <li>Deterministic algorithm  with same runtime: <font class="ref">van den Brand '20</font></li>
+    <li> Randomized <font class="fr">$$\tilde{O}(\sqrt{m}(md + d^3))$$</font> algorithm, <font class="ref"> van den Brand, Lee, Sidford, Song '20 </font> </li>
+  </ul>
+  </fieldset>
+  <br>
+</div>
+-->
+
+
+<div id="step-LP-formulation-subspace" class="step" data-rel-x="3000" data-rel-y="0" data-rel-z="0" data-scale="1" >
+  <h2 class="center-text">Linear Programming in subspace view</h2>
+  <h4 class="center-text">...a change of perspective<h4>
+
+    <p>
+    In standard form for $$A \in \mathbb{Q}^{m \times n}$$, $$b\in \mathbb{Q}^m$$, $$c\in \mathbb{Q}^n$$,
+<font class="fr">
+    $$$
+      \begin{aligned}
+      \min \; &\langle c, x \rangle & \max \; & \langle y, b \rangle \\
+      Ax& =b & \qquad A^\top y + s &= c \\
+      x &\geq 0 & s & \geq 0 \\
+      \end{aligned}
+      $$$
+    </font>
+  </p>
+
+  <p>
+    In subspace view for $$W = \ker(A)$$, $$d \in \mathbb{Q}^n$$, s.t. $$Ad=b$$, 
+<font class="fr">
+    $$$
+      \begin{aligned}
+      \min \; &\langle c, x\rangle & \max \; & \langle c - s, d \rangle \\
+      x& \in W + d & \qquad   s &\in W^\perp + c \\
+      x &\geq 0 & s & \geq 0 \\
+      \end{aligned}
+      $$$
+    </font>
+  </p>
+  
+  <!-- <canvas class="center-block" width="800px" height="400px"></canvas> -->
+</div>
+
+
+<div id="step-proximity-proof" class="step" >
+  <h2 class="center-text">Hoffman proximity theorem</h2>
+    <div class=theorem>
+    Assume that the system <font class="fr">$$x \in W + d, x \ge 0$$</font>  is feasible. Then there exists a feasible solution such that <font class="fr">$$\|x - d\|_\infty \le \kappa_W \|d^-\|_1$$.</font>
+  </div>
+
+   <div class="box" style="width: 55%">
+    <b> Proof sketch.</b> 
+    <ul class="lst">
+    	<li> Take any feasible <font class="fr">$$x \in W + d, x \ge 0$$</font>. Thus, <br> $$x-d\in W$$.
+    		<li> We decompose $$x - d=g_1+g_2+\ldots+g_t$$ into <font class="fr">sign-consistent circuits</font> $$g_i\in W$$ by <font class="ref"> Carath&eacute;odory</font>'s theorem.
+    		<li> Delete circuits that do not intersect $$\textrm{supp}(d^-)$$.
+    	 <li> For all other circuits $$g$$ and indices $$j$$,
+       <br> <font class="fr">$$|g_{j}|\le \kappa_A|g_{k}|$$</font> for some 
+    	 	$$k\in \textrm{supp}(d^-)$$.
+    </ul>
+    </div>
+ <div class="box" style="width: 45%">
+      <img src="./data/d-x-original.png" style="width: 60%;">
+      <br>
+      <img src="./data/d-x-dec-text.png" style="width: 60%;">
+  </div>
+
+
+</div>
+
+<div id="step-LP-feasibility-proximity" class="step" data-rel-x="3000" data-rel-y="0" data-rel-z="0" data-scale="1" >
+  <h2 class="center-text">Hoffman proximity theorem</h2>
+<p>
+
+  <div class=theorem>
+    Assume that the system <font class="fr">$$x \in W + d, x \ge 0$$</font>  is feasible. Then there exists a feasible solution such that <font class="fr">$$\|x - d\|_\infty \le \kappa_W \|d^-\|_1$$.</font>
+  </div>
+
+
+    </p>
+     <h5 class="center-text i"> <i> Click diagram to run iteration </i></h4> 
+ 
+  <div class="box" style="margin:10pt; width: 45%">
+    <canvas id="chart_canvas2"></canvas>
+    <!-- <canvas style="text-align: right" id="chart_canvas4"></canvas> -->
+    <!-- <progress id="animationProgress2" max="1" value="0" style="width: 100%"></progress> -->
+  </div>
+
+  <div class="box" style="margin:10pt; width: 45%">
+    <canvas id="chart_canvas4"></canvas>
+    <!-- <canvas style="text-align: right" id="chart_canvas4"></canvas> -->
+    <!-- <progress id="animationProgress2" max="1" value="0" style="width: 100%"></progress> -->
+  </div>
+  <br>
+ 
+  <!-- <canvas class="center-block" width="800px" height="400px"></canvas> -->
+</div>
+
+<div id="step-variable-fixing" class="step" >
+  <h2 class="center-text">Variable fixing for feasibility</h2>
+    <div class=theorem>
+    Assume that the system <font class="fr">$$x \in W + d, x \ge 0$$</font>  is feasible. Then there exists a feasible solution such that <font class="fr">$$\|x - d\|_\infty \le \kappa_W \|d^-\|_1$$.</font>
+  </div>
+
+   <div class="box" style="width: 55%">
+    <b>Recursive algorithm</b> 
+    <ul class="lst">
+    	<li> Use approximate solver to get <font class="fr">near feasible</font><br>
+    		$$z\in W+d$$ with $$\|z^-\|_1$$ &quot;small&quot;.
+    	<li> $$I:=\{i\in [n]:\, z_i> \kappa_W \|z^-\|_1\}$$.
+    	<li>	$$J:=\{i\in [n]:\, z_i\le  \kappa_W \|z^-\|_1\}$$.
+    	<li> By proximity, there exists a feasible solution with $$x_I>0$$.
+    	<li> Recurse on the subspace <font class="fr">$$W'=\mathrm{proj}_J(W)$$</font> with $$d'=d_J$$.
+    	<li> If $$W=\ker(A)$$, then we obtain $$W'=\ker(A')$$ by eliminating the variables in $$I$$.
+    </ul>
+    </div>
+ <div class="box" style="width: 45%">
+      <img src="./data/confidence-screenshot.png" style="width: 100%;">
+
+    $$$
+  \begin{pmatrix}
+     1 & 0 & | & &  \\
+     0 & 1 & | & A' &  \\
+     0 & 0 & |& & \\
+     0 & 0 & |& & \\
+     \end{pmatrix}
+    $$$
+
+  </div>
+
+
+</div>
+
+<div id="step-variable-fixing-2" class="step" >
+  <h2 class="center-text">Variable fixing for feasibility</h2>
+ <b>Recursive algorithm</b> 
+    <ul class="lst">
+    	<li> Use approximate solver to get <font class="fr">near feasible</font><br>
+    		$$z\in W+d$$ with $$\|z^-\|_1$$ &quot;small&quot;.
+    	<li> $$I:=\{i\in [n]:\, z_i> \kappa_W \|z^-\|_1\}$$.
+    	<li>	$$J:=\{i\in [n]:\, z_i\le  \kappa_W \|z^-\|_1\}$$.
+     	<li> Recurse on the subspace <font class="fr">$$W'=\mathrm{proj}_J(W)$$</font> with $$d'=d_J$$.
+</ul>
+  <fieldset style="border: 1px black solid; position: relative;">
+ <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em ">Questions</legend>
+   <ul class="lst">
+    	<li> How do we guarantee that $$I\neq \emptyset$$?
+    	<li> How can we construct a feasible solution? Given $$x'\in \mathrm{proj}_J(W)+d_J$$, $$x'\ge 0$$, how do we recover $$x\in W+d$$, $$x\ge 0$$?
+</ul>
+        </fieldset>
+
+</div>
+
+
+<div id="step-lifting" class="step" >
+  <h2 class="center-text">The lifting operation</h2>
+   <div class="box" style="width: 55%">
+<ul class="lst">
+	<li> $$W\subseteq \mathbb{R}^n$$ subspace, $$J\subseteq [n]$$
+	<li>$$y\in \mathrm{proj}_J(W)$$, i.e. $$\exists x\in W$$, $$x_J=y$$.
+<li> The <font class="fr">lifting</font> of $$y$$ to $$W$$ is defined as
+<font class="fr">
+	$$$L_J^W(y):=\argmin_x\left\{\|x\|_2:\, x\in W, x_J=y\right\}$$$
+</font>
+<li> Can be computed using a projection matrix.
+</ul>
+  <span class="lemma"> $$\|L_J^W(y)\|_\infty\le \kappa_W \|y\|_1$$.
+  	</span>
+  <br>
+  <b>Proof.</b> A similar circuit decomposition argument.
+</div>
+   <div class="box" style="width: 45%">
+   	    <img src="./data/lift.png" style="width: 100%;">
+   </div>
+
+</div>
+
+
+<div id="step-feasibility-algorithm" class="step" >
+  <h2 class="center-text">The feasibility algorithm</h2>
+
+   <div class="box" style="width: 55%">
+  <fieldset style="border: 1px black solid">
+    <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em">Oracle$$(\varepsilon)$$</legend>
+    $$
+    \begin{aligned}
+     z &\in W + d\\
+\|z^-\|_\infty &\le \varepsilon \|d^-\|_1\\
+     {\color{blue} \|z - d\|_\infty} &{\color{blue}\le C\kappa_W \|d^-\|_1}
+     \end{aligned}
+    $$
+       <img src="./data/blackbox.png" style="width: 20%; float:right">
+   </fieldset>
+   <br>
+  <fieldset style="border: 1px black solid">
+    <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em">Feasibility$$(W,d)$$</legend>
+    $$$
+     \begin{aligned}
+     x &\in W + d,\quad x\ge 0 \\
+     { \color{blue}  \|x - d\|_\infty }&   { \color{blue}\le C'\kappa_W^2 n \|d^-\|_1}
+     \end{aligned}
+    $$$
+    Stronger system with proximity constraint useful for <font class="fr">&quot;pullback&quot;</font> 
+    </fieldset>
+</div>
+   <div class="box" style="width: 45%">
+<ul class="lst">
+	<li> 
+   Obtain <font class="fr"> $$z$$ </font> by applying the oracle with <br><font class="fr"> $$\varepsilon = 1/(\kappa \cdot \mathrm{poly}(n))$$ </font>
+   <li>  $$J := \{i\in [n] :\,  z_i < \kappa_W \|z^-\|_1\}$$.
+   <li> If $$J=\emptyset$$ then replace $$d$$ by the projection $$d/W$$.
+   <li> Apply the recursive solver to <font class="fr"> $$\mathrm{proj}_J(W)$$ </font> and <font class="fr"> $$z_J$$ </font> to obtain <br><font class="fr">  $$\tilde x \in \mathrm{proj}_J(W) + z_J, \ \tilde x \ge 0$$ </font>.
+   	<li> Lift the solution back up to obtain 
+   <font class="fr"> $$$ x := z + L_J^W(\tilde x - z_J) \ge 0.$$$ </font> 
+  <li> Non-negativity and proximity follows from proximity of the recursive solver!
+</div>
+</div>
+
+
+<div id="step-feasibility-algorithm-summary" class="step" >
+  <h2 class="center-text">The feasibility algorithm</h2>
+
+<ul class="lst">
+	<li> As described above, we need <font class="fr">$$\le n$$</font> calls to the oracle.
+	<li> Can be decreased to  <font class="fr">$$\le m$$</font> calls (with a little more care.)  
+	<li> This leads to an <font class="fr">$$O(mn^{\omega+o(1)}\log(\kappa_W+n))$$</font> feasibility algorithm using <font class="ref">van den Brand '20</font>.
+	</ul>
+
+  <fieldset style="border: 1px black solid">
+    <legend style="border: 1px black solid;margin-left: 1em; padding: 0.2em 0.8em">Estimating and certifying $$\kappa_W$$</legend>
+<ul class="lst">
+	<li> We maintain a guess $$M$$ on $$\kappa_W$$.
+	<li> If $$\|L_J^W(y)\|_\infty\le M\|y\|_1$$ for every lifting call, the algorithm succeeds. 
+	<li> Otherwise, we can recover a circuit with imbalance $$>M$$, showing that $$\kappa_W>M$$.
+ </ul>
+ </div>
+
+
+<div id="step-LP-optimality-proximity" class="step" data-rel-x="3000" data-rel-y="0" data-rel-z="0" data-scale="1" >
+  <h2 class="center-text">Proximal optimal solutions</h2>
+<p>
+  <h5 class="center-text">proximity works for optimization as well!</h5>
+<font class="fr">
+    $$$
+      \begin{aligned}
+      \min \; &\langle c, x\rangle & \max \; & \langle c - s, d \rangle \\
+      x& \in W + d & \qquad   s &\in W^\perp + c \\
+      x &\geq 0 & s & \geq 0 \\
+      \end{aligned}
+      $$$
+    </font>
+  </p>
+
+  Let <font class="fr"> $$s \ge 0, s \in W^\perp + c$$ </font> be a feasible dual, but not necessarily optimal solution.
+
+  <div class=theorem>
+    Assuming that the primal is feasible, there exists an <font class="em2">optimal</font> solution <font class="fr">$$x \in W + d, x \ge 0$$</font> such that <font class="fr">$$\|x - d\|_\infty \le \kappa_W(\|d^-\|_1 + \|d_{\mathrm{supp}(s)}\|_1)$$.</font>
+  </div>
+ <!-- <b> Proof sketch.</b> The first term follows from "fixing" the negative variables of <font class="fr"> $$x$$ </font>as before. For the second term note that we only need to apply the circuits that improve the objective value of the primal solution, i.e. that intersect $$\mathrm{supp(s)}$$. -->
+</div>
+
+
+<div id="step-LP-optimization-algorithm" class="step" data-rel-x="3000" data-rel-y="0" data-rel-z="0" data-scale="1" >
+  <h2 class="center-text">Optimization algorithm</h2>
+<font class="fr">
+    $$$
+      \begin{aligned}
+      \min \; &\langle c, x\rangle & \max \; & \langle c - s, d \rangle \\
+      x& \in W + d & \qquad   s &\in W^\perp + c \\
+      x &\geq 0 & s & \geq 0 \\
+      \end{aligned}
+      $$$
+    </font>
+  </p>
+<ul class="list">
+	<li> Altogether $$nm$$ calls to the black box solver.
+	<li> We have $$\le n$$ <span class="em2">Outer Loops</span>, each comprising $$\le m$$
+	<span class="em2">Inner Loops</span> 
+	<li> Each Outer Loop finds $$\tilde d$$ with $$\|d-\tilde d\|$$ &quot;small&quot;, and $$(x,s)$$ primal and dual optimal solutions to 
+		$$$\min \; \langle c, x\rangle \quad x\in W+\tilde d\, \quad x\ge 0.$$$
+     <li> Using proximity, we can use this to conclude $$x_I>0$$ for a certain variable set $$I\subseteq [n]$$ and recurse.
+</ul>
+</div>
+
+
+
+<div id="step-hoffman-proximity" class="step" data-rel-x="3000" data-rel-y="0" data-rel-z="0" data-scale="1" >
+  <h2 class="center-text">Constructive Hoffman proximity</h2>
+  <!-- <canvas class="center-block" width="800px" height="400px"></canvas> -->
+  More general form of <font class="fr">Hoffman proximity theorem</font>
+  <br>
+
+    <div class=theorem>
+    Let     <font class="fr">$$W \subset \R^n$$ </font> be a subspace and  <font class="fr"> $$\ell,u \in \R^n$$ </font> lower and upper bounds and assume that <font class="fr"> $$P = \{x \in W: \ell \le x \le u\}$$ </font> is non-empty. Then there exists     <font class="fr"> $$x\in P$$ </font> such that
+    <font class="fr">
+      $$$\|x\|_\infty \le \kappa_W(\|\ell^+\|_1 + \|u^-\|_1).$$$
+      </font>
+    </div>
+
+Certifying sometimes requires the following constructive version:
+  <div class=theorem>
+   Given some <font class="fr">$$y \in P$$ </font> such an <font class="fr">$$x \in P$$ </font> with <font class="fr">$$\|x\|_\infty \le \kappa_W(\|\ell^+\|_1 + \|u^-\|_1)$$</font> 
+    can be found in <font class="fr">$$O(n^3)$$ </font>.
+    </div>
+    <b> Proof idea.</b> Sign-consistently reduce the norm of <font class="fr">$$y$$ </font> while maintaining containment in <font class="fr">$$P$$ </font>.
+</div>
+
+
+
+ <div id="step-conclusions" class="step" >
+       <h2 class="center-text">Open questions</h2>
+       <ul class="lst">
+             <li style="margin-bottom: 10px"> Feasibility needs $$m$$ calls&mdash;can we make it $$\min\{m,n-m\}$$ to have the same for primal and dual?
+<li style="margin-bottom: 10px"> 
+              Optimization takes $$mn$$ calls&mdash;would fewer be enough?
+     <li style="margin-bottom: 10px"> 
+       Can we get better for special cases, such as max flow or min-cost flow?
+              </li>
+        <li style="margin-bottom: 10px"> Can we get faster (possibly non-deterministic) version of the constructive Hoffman algorithm?
+           </li>
+  
+        <li style="margin-bottom: 10px"> Can we extend the black box approach to problems with unbounded $$\kappa$$, such as generalized flows?
+               </li>
+        <li style="margin-bottom: 10px"> $$\kappa$$ - theory for more general convex programs e.g. <span class="em2">Convex Quadratic Programs</span> or <span class="em2">Semidefinite Programs (SDP)</span>
+           </li>
+                <li style="margin-bottom: 10px"> $$\kappa$$ - theory for <span class="em2">Integer Programming (IP)</span>
+        </li>
+       </ul>
+</div>
+
+<!--
+<div id="step-drawing-tool" class="step">
+  <h2 class="center-text"> Drawing Slide</h2>
+  <div style="position:absolute;top: 0; left: 0;width:100%;height:100%;background-color: transparent">
+    <canvas id="mysheet" style="width: 100%; height:100%;background-color: transparent;">
+    </canvas>
+    </div>
+</div>
+
+</div>
+-->
+
+<!--
+<div id="step-circuit-finding" class="step">
+    <h2 class="center-text"> Finding circuits </h2>
+  </div>
+
+  <div id="step-chi-bar-star-meaning" class="step">
+      <h2 class="center-text"> What does $$\bar\chi_A^*$$ depence mean.</h2>
+      Examples.
+    </div>
+-->
+<!-- <div id="step-ty" class="step purple"
+  data-x="3500" data-y="6500" data-z="1500" data-rotate-x="0" data-rotate-y="-70"
+  data-rotate-z="80" dat-scale="2">
+  <canvas class="center-block" width="900" height="800"></canvas>
+</div>
+
+<div id="overview" class="step" data-x="6000" data-y="5500" data-z="0" data-scale="4" data-rotate-y="-60">
+    </div>
+
+
+  </div> -->
+
+<!-- <div id="impress-toolbar"></div> -->
+
+<script>
+    document.addEventListener('keypress', function(e){
+      console.log(e.which);
+              if(e.which === 115 ){ //s
+                window.location.href = "columbia.html#/step-primal-dual-animation";
+              } else if(e.which === 111){ //o
+                window.location.href = "columbia.html#/step-overview-3";
+              }})
+  </script>
+
+<script src="chart1.js"></script>
+<script src="chart2.js"></script>
+
+
+<div class="impress-progressbar"><div></div></div>
+<div class="impress-progress"></div>
+
+<!-- <div id="impress-help"></div> -->
+
+<!-- <script src="lib/js/impress.js"></script> -->
+<script type="text/javascript" src="impress.js/js/impress.js"></script>
+<script>impress().init();</script>
+</body>
+</html>
