@@ -195,6 +195,18 @@ width:100%;
 border-spacing:10pt;
 }
 
+
+table.topics {
+padding:6px 20px;
+width:100%;
+border-spacing:5pt;
+border:1px solid ;
+}
+
+tr.topicsrow {
+border:1px solid ;
+}
+
 tr.pubitem2 {
 border-spacing:0pt;
 }
