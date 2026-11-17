@@ -38,6 +38,48 @@
   <tbody>
 
 
+<tr class="pubitem2">
+<td class="main">
+<font class="title">
+Newton Steps are Faster for Linear Complementarity Problems
+  </font>
+<br>
+<font class="author">
+Haoyuan Ma, L&aacute;szl&oacute;&nbsp;A. V&eacute;gh, and Adrian Vladu
+  </font>
+    <br>
+  <p class="abstract">
+  We present an interior point method for linear complementarity problems with sufficient matrices whose running time depends on the square root of the handicap number. This improves on the previous linear dependence in the literature. The algorithm can decrease the duality gap by a constant factor  in $O\left(\min\left\{\sqrt{n} (1+\kappa),n^{9/8}\sqrt{1+\kappa}\right\}\right)$ iterations.
+  Curiously, this can already be achieved using standard Newton updates. 
+  We analyze the IPM in a norm defined by a local weighting, where centralizing Newton steps quadratically converge to the central path, without any dependence on the handicap number. The weights arise from a characterization by Rump (Linear Algebra and Its Applications, 1997, 1998, 2003) of the sign-real spectral radius and its relation to sufficiency; another ingredient of our proof is  a new operator norm characterization of the handicap number.
+  
+  Moreover, the connection to Rump's work also enables us to show coNP-completeness of testing sufficiency, and approximation hardness of the handicap number.
+</td>
+<td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/2605.10701"  target="_blank">arXiv:2605.10701</a></font>
+<br>
+
+<tr class="pubitem2">
+<td class="main">
+<font class="title">
+  Solving Classes of Linear Programs with Strongly Polynomial Straight Line Complexity in Strongly Polynomial Time
+  </font>
+<br>
+<font class="author">
+Daniel Dadush, Zhuan Khye Koh, Bento Natura, Neil Olver, and L&aacute;szl&oacute;&nbsp;A. V&eacute;gh
+  </font>
+    <br>
+      <font class="conference">
+Based on parts of the STOC 2026 paper
+  <p class="abstract">
+The <a href="https://epubs.siam.org/doi/full/10.1137/23M1554588">recent paper ADLNV, SICOMP 2025</a>  introduced an interior point method for linear programs whose number of iterations is bounded by the so-called straight line complexity (SLC) of the instance. This yields a strongly polynomial bound on the number of iterations of the corresponding interior point algorithm for broad classes of linear programs. In particular, in the companion paper we give a strongly polynomial straight line complexity bound for two-variable-per-inequality linear programs. However, in order to obtain a strongly polynomial algorithm for these classes, one also needs to address two important technical issues: initialization and bit-complexity bounds. Standard IPM initialization techniques either require numerical estimates that cannot be obtained in the strongly polynomial model, or involve modifying the instance in ways that do not preserve the geometry of the original LP, potentially affecting the SLC.
+In this work, we present an initialization framework for interior point methods for linear programming, along with a rounding procedure that ensures the continued feasibility of the IPM. We develop a multistage scheme in which each stage can be initialized in strongly polynomial time given the output of the previous stage. Additionally, we address the challenge of controlling the bit complexity of each iterate throughout the algorithm. To this end, we show that it is possible to represent iterates as low-complexity convex combinations of vertices and extreme rays. Our combinatorial rounding step is independent of the algorithm in ADLNV 2025, and can be applied more broadly in the context of path-following methods.
+</td>
+<td class="link">
+<font class="arxiv">
+<a href="https://arxiv.org/abs/2610.26073"  target="_blank">arXiv:2610.26073</a></font>
+<br>
 
 
 
